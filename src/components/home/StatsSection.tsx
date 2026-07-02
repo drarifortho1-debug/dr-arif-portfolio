@@ -39,11 +39,11 @@ export default function StatsSection() {
               {/* ভিডিওর ওপর ফুটিয়ে তোলার জন্য মূল টেক্সট কালার text-slate-300 করা হয়েছে */}
               <p className="text-xl md:text-2xl font-semibold text-slate-300 leading-[2.2] tracking-wide">
                 বিগত{" "}
-                <span className="text-4xl font-black text-white inline-flex items-center justify-center px-1 border-b-2 border-teal-400/40 translate-y-0.75">
+                <span className="text-4xl font-black text-blue-light inline-flex items-center justify-center px-1 border-b-2 border-blue-light translate-y-0.75">
                   ৫+
                 </span>{" "}
                 বছরের নিবেদিত পথচলায় সফলভাবে সম্পন্ন হয়েছে{" "}
-                <span className="text-4xl font-black text-teal-400 inline-flex items-center justify-center px-1 border-b-2 border-teal-400/40 translate-y-0.75">
+                <span className="text-4xl font-black text-blue-light inline-flex items-center justify-center px-1 border-b-2 border-blue-light/40 translate-y-0.75">
                   ৫০০০+
                 </span>{" "}
                 জটিল অর্থোপেডিক সার্জারি। সড়ক দুর্ঘটনাকবলিত ও জরুরি রোগীদের
@@ -53,7 +53,7 @@ export default function StatsSection() {
                 </span>{" "}
                 ট্রমা অপারেশন। যার ফলশ্রুতিতে এ পর্যন্ত আধুনিক ও সঠিক পরামর্শ
                 পেয়েছেন{" "}
-                <span className="text-4xl font-black text-emerald-400 inline-flex items-center justify-center px-1 border-b-2 border-teal-400/40 translate-y-0.75">
+                <span className="text-4xl font-black text-blue-light inline-flex items-center justify-center px-1 border-b-2 border-blue-light translate-y-0.75">
                   ৫০,০০০+
                 </span>{" "}
                 এরও বেশি হাসিমুখ।

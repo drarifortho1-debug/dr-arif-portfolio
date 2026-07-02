@@ -80,7 +80,7 @@ export default function HeroBanner() {
                 />
               </div>
 
-              <div className="absolute -bottom-8 -right-4 bg-white/95 backdrop-blur-md border border-slate-200/80 px-5 py-4 rounded-2xl shadow-2xl  shadow-slate-blue-light flex items-center gap-4 max-w-52.5 group/badge hover:border-teal-200 transition-colors duration-300">
+              <div className="absolute -bottom-8 -right-4 bg-white/95 backdrop-blur-md border border-slate-200/80 px-5 py-4 rounded-2xl shadow-2xl  shadow-slate-blue-light flex items-center gap-4 max-w-52.5 group/badge hover:border-blue-light transition-colors duration-300">
                 <div className="space-y-0.5">
                   <p className="text-sm font-black text-slate-900 leading-tight tracking-wide">
                     তিনটি চেম্বারে

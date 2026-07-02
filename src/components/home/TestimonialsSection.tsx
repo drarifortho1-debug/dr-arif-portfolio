@@ -121,7 +121,7 @@ export default function TestimonialsSection() {
         {/* Header Block */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-12 border-b border-slate-200/80 mb-16 text-left">
           <div className="space-y-4 max-w-xl">
-            <div className="inline-flex items-center gap-2 text-teal-600 bg-teal-50 px-3 py-1 rounded-full border border-teal-200  text-sm font-bold tracking-wider uppercase">
+            <div className="inline-flex items-center gap-2 text-blue-light bg-blue-light/10 px-3 py-1 rounded-full border border-blue-light/20  text-sm font-bold tracking-wider uppercase">
               রোগীর মতামত
             </div>
             <h2 className="text-3xl md:text-4xl font-semibold text-slate-800 tracking-tight">

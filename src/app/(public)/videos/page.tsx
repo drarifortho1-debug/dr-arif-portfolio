@@ -1,30 +1,42 @@
 "use client";
 
 import { Badge } from "@/components/shared/badge";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-
-const videoIds = [
-  "peJmnluzEOM",
-  "V8KqUgKvz7w",
-  "Ck2vI6l65wA",
-  "dc0kCylK2RY",
-  "S7oFrwWe61Q",
-  "rUwbTU0Jv_8",
-  "DXZXd6cd-T8",
-  "qFtjHJJOAJI",
-  "JcyQSUToUTM",
-  "0P-nnwwXKCU",
-];
+import { useEffect, useState } from "react";
 
 export default function VideoGallery() {
+  const [videoIds, setVideoIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const q = query(collection(db, "videos"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const list = querySnapshot.docs.map(
+            (doc) => doc.data().videoId as string,
+          );
+          setVideoIds(list);
+        } else {
+          setVideoIds([]);
+        }
+      } catch (err) {
+        setVideoIds([]);
+      }
+    };
+    fetchVideos();
+  }, []);
+
   return (
     <section className="bg-white pt-15 pb-20 w-full overflow-hidden">
       <div className="max-container">
         <div className="mb-12 text-center">
-          <Badge text="ভিডিও গ্যালারি" />
+          <Badge text="ভিডিওসমূহ " />
           <h1 className="text-4xl md:text-5xl font-bold text-blue-dark mb-3 mt-5">
-            আমাদের রোগীদের ভিডিওসমূহ
+            আমাদের ভিডিও গ্যালারি
           </h1>
           <p className="text-slate-600 text-lg">
             চিকিৎসা সংক্রান্ত গুরুত্বপূর্ণ ভিডিও ও বিশেষজ্ঞের পরামর্শসমূহ

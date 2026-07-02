@@ -5,6 +5,7 @@ import StatsSection from "@/components/home/StatsSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import TreatmentsPreview from "@/components/home/TreatmentsPreview";
 import VideoGallery from "@/components/home/VideoGallery";
+import BlogsPreview from "@/components/home/BlogsPreview";
 
 export default function HomePage() {
   return (
@@ -15,6 +16,7 @@ export default function HomePage() {
       <ChambersSection />
       <TestimonialsSection />
       <VideoGallery />
+      <BlogsPreview />
       <CTABanner />
     </>
   );

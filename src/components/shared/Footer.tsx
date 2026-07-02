@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const quickLinks = [
@@ -6,64 +7,77 @@ const quickLinks = [
   { label: "আমাদের সম্পর্কে", href: "/about" },
   { label: "চিকিৎসা সেবা", href: "/treatments" },
   { label: "ভিডিও গ্যালারি", href: "/videos" },
-  // { label: "ব্লগ", href: "/blogs" },
-  // { label: "চেম্বার ও যোগাযোগ", href: "/chambers" },
+  { label: "স্বাস্থ্য টিপস", href: "/blogs" },
 ];
 
 const socialLinks = [
   { label: "ফেসবুক", href: "#" },
   { label: "হোয়াটসঅ্যাপ", href: "https://wa.me/8801858405083" },
-  { label: "ইউটিউব", href: "#" },
+  { label: "ইউটিউব", href: "https://www.youtube.com/@Dr.GaziArifVelia1" },
 ];
+
 const chambers = [
   {
     name: "কুমিল্লা ট্রমা সেন্টার",
-    location: "ল্যাবএইড ডায়াগনস্টিক সংলগ্ন, কান্দিরপাড়, কুমিল্লা",
+    location:
+      "রুম ৭০৬, ৭ম তলা (লিফট-৬), নতুন ভবন, রাণীর বাজার রোড, কান্দিরপাড়, কুমিল্লা",
+    schedule: "শনিবার থেকে বুধবার (দুপুর ২:০০ — বিকেল ৫:০০)",
+    phone: "+৮৮০ ১৬১২৩৭১৬৯৬",
+    phone2: "+৮৮০ ১৮৫৮৪০৫০৮৩",
   },
   {
-    name: "মেডিকেল সেন্টার",
-    location: "নতুন বাজার মোড়, দ্বিতীয় শাখা, কুমিল্লা",
+    name: "পপূলার ডায়াগনস্টিক সেন্টার",
+    location:
+      "রুম ৫১২, ৫ম তলা (লিফট-৪), হাউজ নাম্বার ৫৭, লাকসাম রোড, রামঘাট, কান্দিরপাড়, কুমিল্লা",
+    schedule: "শনিবার থেকে বুধবার (বিকেল ৫:০০ — রাত ৮:০০)",
+    phone: "+৮৮০ ১৬১২৩৭১৬৯৬",
+    phone2: "+৮৮০ ১৮৫৮৪০৫০৮৩",
   },
   {
-    name: "লাইফ কেয়ার হাসপাতাল",
-    location: "টাউন হল এলাকা, কুমিল্লা",
+    name: "ডক্টর’স পয়েন্ট ডায়াগনস্টিক সেন্টার",
+    location: "কালিকাপুর বাজার, বুড়িচং, কুমিল্লা",
+    schedule: "শুধুমাত্র শুক্রবার (সকাল ৮:০০ — রাত ৮:০০)",
+    phone: "+৮৮০ ১৬১২৩৭১৬৯৬",
   },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 text-white/60 w-full">
+    <footer className="bg-primary-dark text-white/60 w-full">
       <div className="max-container pt-20 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
-          {/* ১. ডাক্তার পরিচিতি (ডার্ক স্টাইল) */}
-          <div className="md:col-span-5 space-y-4 text-left">
-            <h3 className="font-bold text-white text-lg tracking-tight">
-              ডা: গাজী মোহাম্মদ আরিফুল ইসলাম
+          <div className="md:col-span-4 space-y-4 text-left">
+            <Image src="/logo.png" width={120} height={100} alt="LOGO"/>
+            <h3 className="font-bold text-white  text-3xl tracking-tight">
+              ডা. গাজী মোহাম্মদ <br /> আরিফুল ইসলাম (ভিলীয়া)
             </h3>
-            <p className="text-sm -mt-2 mb-5 font-bold text-teal-400 uppercase tracking-widest">
-              অর্থোপেডিক্স বিশেষজ্ঞ ও ট্রমা সার্জন
+            <p className="text-sm font-bold text-blue-light uppercase tracking-widest">
+              অর্থোপেডিক্স, ট্রমা, স্পোর্টস ও হ্যান্ড সার্জন
             </p>
-            <p className="text-sm text-white/50 font-medium leading-relaxed max-w-sm">
-              আধুনিক ও উন্নত অর্থোপেডিক চিকিৎসা এবং নিখুঁত ট্রমা সার্জারির
-              মাধ্যমে আপনার গতিময় ও ব্যথামুক্ত জীবন ফিরিয়ে আনাই আমাদের লক্ষ্য।
-            </p>
-            {/* সোশ্যাল লিংকস - আইকন ছাড়া */}
+            <div className="space-y-1 text-white/50 leading-relaxed">
+              <p className="font-semibold text-white/70">
+                এমবিবিএস, বিসিএস, এমএস (অর্থোপেডিক্স সার্জারী)
+              </p>
+              <p>বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয় (BSMMU), ঢাকা</p>
+              <p>সহকারী রেজিস্ট্রার — ক্যাজুয়ালটি বিভাগ, কুমিল্লা মেডিকেল কলেজ হাসপাতাল</p>
+            </div>
             <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
               {socialLinks.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
-                  className="text-sm font-semibold text-white/50 hover:text-white transition-colors flex items-center gap-2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-white/50 hover:text-white transition-colors flex items-center gap-1.5"
                 >
-                  <ArrowUpRight size={18} /> {s.label}
+                  <ArrowUpRight size={16} /> {s.label}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* ২. কুইক লিংকস */}
           <div className="md:col-span-3 md:pl-8 text-left">
-            <h4 className="font-bold text-white mb-6  uppercase tracking-widest">
+            <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">
               গুরুত্বপূর্ণ লিংকস
             </h4>
             <ul className="space-y-3.5">
@@ -80,37 +94,31 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* ৩. যোগাযোগ */}
-          <div className="md:col-span-4 text-left">
-            <h4 className="font-bold text-white mb-6 uppercase tracking-widest">
+          <div className="md:col-span-5 text-left">
+            <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">
               চেম্বারসমূহ
             </h4>
-            <div className="space-y-6">
+            <div className="space-y-5">
               {chambers.map((chamber, index) => (
-                <ul
+                <div
                   key={index}
-                  className="space-y-0.5 text-sm font-medium text-white/50"
+                  className="space-y-0.5  font-medium text-white/50 border-l border-white/10 pl-3"
                 >
-                  <li className="text-white font-semibold">{chamber.name}</li>
-                  <li className=" text-white/40">{chamber.location}</li>
-                </ul>
+                  <h5 className="text-white font-semibold">{chamber.name}</h5>
+                  <p className=" w-8/12">{chamber.location}</p>
+                  <p className="text-blue-light font-semibold">{chamber.schedule}</p>
+                  <p className="text-white/70 font-bold">{chamber.phone}</p>
+                  {chamber.phone2 && <p className="text-white/70 font-bold">{chamber.phone2}</p>}
+                </div>
               ))}
 
-              <div className="pt-2 space-y-1">
-                <li className="text-white font-bold hover:text-teal-400 transition-colors list-none">
-                  <a href="tel:+8801858405083">+৮৮০ ১৮৫৮৪০৫০৮৩</a>
-                </li>
-                <li className="hover:text-white transition-colors text-sm text-white/50 list-none">
-                  <a href="mailto:info@drarifortho.com">info@drarifortho.com</a>
-                </li>
-              </div>
+           
             </div>
           </div>
         </div>
 
-        {/* নিচের পার্ট (ডার্ক থিম) */}
         <div className="border-t border-white/10 mt-16 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/50 font-medium">
+          <p className="text-xs text-white/50 font-medium">
             &copy; ২০২৬ ডা: আরিফ অর্থো। সর্বস্বত্ব সংরক্ষিত।
           </p>
         </div>

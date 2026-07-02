@@ -10,8 +10,7 @@ const navItems = [
   { label: "আমার সম্পর্কে", href: "/about" },
   { label: "চিকিৎসা সেবা", href: "/treatments" },
   { label: "ভিডিও গ্যালারি", href: "/videos" },
-  // { label: "চেম্বার", href: "/chambers" },
-  // { label: "স্বাস্থ্য টিপস", href: "/blogs" },
+  { label: "স্বাস্থ্য টিপস", href: "/blogs" },
 ];
 
 export default function Navbar() {

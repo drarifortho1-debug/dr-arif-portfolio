@@ -1,5 +1,3 @@
-import Footer from "@/components/shared/Footer";
-import Navbar from "@/components/shared/Navbar";
 import type { Metadata } from "next";
 import { Google_Sans, Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
@@ -34,9 +32,7 @@ export default function RootLayout({
       className={`${notoSansBengali.variable} ${googleSans.variable} scroll-smooth`}
     >
       <body className="min-h-dvh flex flex-col font-bangla">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

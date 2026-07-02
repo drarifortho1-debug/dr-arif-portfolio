@@ -108,7 +108,7 @@ export default function TreatmentsPage() {
                   className="w-full flex items-center justify-between p-4 bg-gray-50 font-bold"
                 >
                   <div className="flex items-center text-left gap-3">
-                    <p.icon className="text-teal-600" /> {p.title}
+                    <p.icon className="text-blue-light" /> {p.title}
                   </div>
                   <ChevronDown
                     className={`transition ${openIndex === i ? "rotate-180" : ""}`}
@@ -152,10 +152,10 @@ export default function TreatmentsPage() {
             </ul>
           </div>
           <div>
-            <h2 className="text-lg font-bold mb-4 text-teal-700">
+            <h2 className="text-lg font-bold mb-4 text-blue-dark">
               <HeartPulse className="inline" /> অর্থোপেডিক চিকিৎসা
             </h2>
-            <ul className=" space-y-1 bg-teal-50 p-4 rounded">
+            <ul className=" space-y-1 bg-blue-light/10 p-4 rounded">
               {[
                 "ঘাড় ব্যথা (Neck pain)",
                 "কোমর ব্যথা (Back pain)",
