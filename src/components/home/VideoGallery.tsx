@@ -1,9 +1,8 @@
 "use client";
 
-import { ArrowUpRight, Play } from "lucide-react";
-import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { Badge } from "../shared/badge";
 
 // প্রথম ৪টি ভিডিও হোমপেজে দেখানোর জন্য
 const videoIds = [
@@ -20,75 +19,48 @@ const videoIds = [
 ];
 
 export default function VideoGallery() {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-
-  // প্রথম ৪টি ভিডিও স্লাইস করে নেওয়া হলো
+  // প্রথম ৪টি ভিডিও স্লাইস করে নেওয়া হলো
   const homeVideos = videoIds.slice(0, 4);
 
   return (
     <section className="bg-white py-24 md:py-32 border-t border-slate-100 w-full overflow-hidden">
       <div className="max-container">
         {/* হেডার ব্লক */}
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-12 border-b border-slate-200/80 mb-16 text-left">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-8 border-b border-slate-200/80 mb-12 text-left">
           <div className="space-y-3 max-w-xl">
-            <div className="inline-flex items-center gap-2 text-teal-600 bg-teal-50 px-3 py-1 rounded-md text-sm font-bold tracking-wider uppercase">
-              ভিডিও গ্যালারি
-            </div>
-            <h2 className="text-3xl md:text-4xl font-semibold text-slate-800 tracking-tight">
+            
+            <Badge text="ভিডিও গ্যালারি" />
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-dark tracking-tight">
               চিকিৎসা বিষয়ক ভিডিও
             </h2>
           </div>
 
           <Link
             href="/gallery"
-            className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-teal-600 hover:text-teal-700 transition-colors group"
+            className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-blue-light hover:text-teal-700 transition-colors group"
           >
             সব ভিডিও দেখুন
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
 
-        {/* 🛠️ ফিক্সড ৪-কলাম গ্রিড লেআউট */}
+        {/* ৪-কলাম গ্রিড লেআউট (স্টাইল অপরিবর্তিত) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {homeVideos.map((id) => (
             <div
               key={id}
               className="flex flex-col bg-slate-50/50 rounded-xl p-2 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
             >
-              {/* 💡 থাম্বনেইল রাউন্ডনেস `rounded-lg` এ ফিক্সড করা হয়েছে */}
-              <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-slate-900 group">
-                {activeVideo === id ? (
-                  <iframe
-                    className="w-full h-full"
-                    src={`https://www.youtube.com/embed/${id}?autoplay=1`}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                ) : (
-                  <div
-                    onClick={() => setActiveVideo(id)}
-                    className="w-full h-full cursor-pointer"
-                  >
-                    <Image
-                      width={700}
-                      height={700}
-                      src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`}
-                      alt="YouTube Video Thumbnail"
-                      className="w-full h-full object-cover opacity-95 group-hover:scale-102 transition-transform duration-300"
-                    />
-
-                    {/* হালকা ওভারলে শ্যাডো */}
-                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-colors" />
-
-                    {/* 🛠️ ছোট, স্লিক এবং ট্রান্সপারেন্ট প্লে বাটন */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-11 h-11 rounded-full bg-white/80 backdrop-blur-sm text-teal-600 flex items-center justify-center shadow-sm group-hover:bg-white group-hover:text-teal-700 group-hover:scale-105 active:scale-95 transition-all duration-300">
-                        <Play className="w-4 h-4 fill-teal-600 ml-0.5 opacity-90" />
-                      </div>
-                    </div>
-                  </div>
-                )}
+              {/* ডিফল্ট প্লেয়ার ইন্টিগ্রেশন */}
+              <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-slate-900">
+                <iframe
+                  className="w-full h-full border-0"
+                  src={`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`}
+                  title="YouTube video player"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy" // পারফরম্যান্স বুস্ট করার জন্য লেজি লোড ব্যবহার করা হয়েছে
+                />
               </div>
             </div>
           ))}

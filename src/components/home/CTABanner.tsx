@@ -1,4 +1,5 @@
 import { Phone, MessageCircle } from "lucide-react";
+import { Badge } from "../shared/badge";
 
 export default function CTABanner() {
   // হোয়াটসঅ্যাপের জন্য ডাইরেক্ট মেসেজ লিঙ্ক
@@ -16,10 +17,9 @@ export default function CTABanner() {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 lg:gap-20">
           {/* টেক্সট ব্লক */}
           <div className="space-y-4 max-w-2xl text-left">
-            <div className="inline-flex items-center gap-2 text-teal-600 bg-teal-100/60 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">
-              সরাসরি যোগাযোগ
-            </div>
-            <h2 className="text-3xl md:text-4xl font-semibold text-slate-800 tracking-tight leading-tight">
+            
+            <Badge text="সরাসরি যোগাযোগ" />
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-dark tracking-tight leading-tight">
               আপনার সুস্থতাই আমাদের একমাত্র লক্ষ্য
             </h2>
             <p className="text-slate-500 font-medium text-sm md:text-base leading-relaxed">
@@ -33,10 +33,10 @@ export default function CTABanner() {
             {/* ডাইরেক্ট কল বাটন */}
             <a
               href="tel:+8801858405083"
-              className="inline-flex items-center justify-center gap-2.5 bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-md shadow-teal-600/10 hover:shadow-lg hover:shadow-teal-600/20 active:scale-95 text-center"
+              className="inline-flex items-center justify-center gap-2.5 bg-blue-light hover:bg-teal-700 text-white px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-md shadow-teal-600/10 hover:shadow-lg hover:shadow-teal-600/20 active:scale-95 text-center"
             >
               <Phone className="w-4 h-4 fill-white/10" />
-              কল করুন: ০১৮৫৮৪০৫০৮৩
+              ০১৮৫৮৪০৫০৮৩
             </a>
 
             {/* রিয়েল হোয়াটসঅ্যাপ কানেক্টর বাটন */}
@@ -44,7 +44,7 @@ export default function CTABanner() {
               href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-emerald-600 px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 border border-emerald-200 shadow-sm active:scale-95 text-center"
+              className="inline-flex items-center justify-center gap-2.5 text-white hover:bg-emerald-800 bg-emerald-600 px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 border border-emerald-200 shadow-sm active:scale-95 text-center"
             >
               <MessageCircle className="w-4 h-4 fill-emerald-50/50" />
               হোয়াটসঅ্যাপে বুক করুন

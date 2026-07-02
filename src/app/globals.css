@@ -12,13 +12,15 @@
   --color-foreground: #171717;
   --color-muted: #787878;
   --font-bangla: var(--font-bangla);
+  --font-google-sans: var(--font-google-sans);
+  --color-blue-light: #3b86d1;
+  --color-blue-dark: #0c2e57;
 
   --shadow-premium: 0 25px 60px -15px rgba(15, 27, 45, 0.12);
   --shadow-warm: 0 20px 50px -12px rgba(200, 122, 58, 0.15);
 }
 
 body {
-
   font-family: var(--font-bangla);
   -webkit-font-smoothing: antialiased;
 }
@@ -137,6 +139,6 @@ body {
     @apply max-w-7xl mx-auto xl:px-20 md:px-10 px-5;
   }
   .primary-btn {
-    @apply inline-flex items-center gap-2.5 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-200 shadow-md shadow-teal-600/10 active:scale-98;
+    @apply inline-flex items-center gap-2.5 bg-blue-light hover:bg-blue-dark text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-200 shadow-md shadow-teal-600/10 active:scale-98;
   }
 }

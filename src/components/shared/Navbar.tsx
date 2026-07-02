@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Phone, Stethoscope, PhoneCall } from "lucide-react";
+import Image from "next/image";
 
 const navItems = [
   { label: "হোম", href: "/" },
@@ -20,14 +21,14 @@ export default function Navbar() {
     <header className="w-full bg-white border-b border-slate-100">
       {/* Centered Modern Container (Non-fixed / Scrolls with page) */}
       <div className="max-container">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-22">
           {/* Left Side: Minimal Doctor Icon */}
           <Link
             href="/"
-            className="flex items-center justify-center w-11 h-11 bg-teal-50 border border-teal-100 rounded-xl text-teal-700 transition-transform hover:scale-105"
+            className=""
             aria-label="হোমপেজ"
           >
-            <Stethoscope className="w-5 h-5" />
+            <Image className="w-auto h-14" src="/logo.png" width={130} height={100} alt="Doctor Logo"/> 
           </Link>
 
           {/* Center Side: Main Navigation */}
@@ -36,7 +37,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-teal-600 rounded-xl hover:bg-slate-50 transition-all duration-200"
+                className="px-3 py-2 text-[15px]  font-semibold text-blue-dark hover:text-blue-light rounded-xl hover:bg-slate-50 transition-all duration-200"
               >
                 {item.label}
               </Link>
@@ -45,7 +46,7 @@ export default function Navbar() {
 
           {/* Right Side: CTA Button */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center">
+            <div className="hidden lg:flex items-center">
               <a href="tel:+8801858405083" className="primary-btn">
                 <PhoneCall className="w-4 h-4" />
                 <span className="pt-0.5">কল করুন</span>
@@ -92,7 +93,7 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-3.5 text-base font-medium text-slate-600 hover:text-teal-600 hover:bg-slate-50 rounded-xl transition-all"
+                  className="block px-4 py-3.5 text-base font-medium text-slate-600 hover:text-blue-light hover:bg-slate-50 rounded-xl transition-all"
                 >
                   {item.label}
                 </Link>
@@ -103,7 +104,7 @@ export default function Navbar() {
             <div className="pt-4 border-t border-slate-100">
               <a
                 href="tel:+8801858405083"
-                className="flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-700 text-white px-5 py-4 rounded-xl text-base font-semibold shadow-sm transition-all"
+                className="primary-btn w-full justify-center"
               >
                 <Phone className="w-4 h-4" />
                 <span>কল করুন</span>

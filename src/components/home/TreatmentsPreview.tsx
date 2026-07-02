@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Badge } from "../shared/badge";
 
 const treatments = [
   {
@@ -40,19 +41,14 @@ export default function TreatmentsPreview() {
     <section className="bg-white py-24 md:py-32 overflow-hidden">
       <div className="max-container">
         {/* Header Block */}
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-12 border-b border-slate-100 mb-16">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-8 border-b border-slate-100 mb-10">
           <div className="space-y-3 max-w-xl">
-            <div className="inline-flex items-center gap-2 text-teal-600 bg-teal-50 px-3 py-1 rounded-full border border-teal-200 text-sm font-bold tracking-wider uppercase">
-              বিশেষায়িত সেবা
-            </div>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+           
+            <Badge text="বিশেষায়িত সেবা" />
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-dark tracking-tight">
               আমাদের চিকিৎসা সেবাসমূহ
             </h2>
           </div>
-          <p className="text-base font-medium text-slate-500 max-w-xs md:text-right leading-relaxed">
-            হাড়জোড়, অর্থোপেডিক ও ট্রমা সংক্রান্ত জটিলতার বিশ্বস্ত এবং আধুনিক
-            চিকিৎসা।
-          </p>
         </div>
 
         {/* Clean Vertical Stack Grid (Image on Top, Text on Bottom) */}
@@ -60,10 +56,10 @@ export default function TreatmentsPreview() {
           {treatments.map((t, i) => (
             <div
               key={i}
-              className="group flex flex-col items-start bg-white rounded-2xl border border-slate-100 p-3 shadow-sm shadow-slate-100/50 hover:shadow-md hover:border-slate-200/80 transition-all duration-300 text-left"
+              className="group flex flex-col items-start bg-white rounded-xl border border-slate-100 p-2 shadow-sm shadow-slate-100/50 hover:shadow-md hover:border-slate-200/80 transition-all duration-300 text-left"
             >
               {/* Top Image: Fixed Aspect Ratio for Uniformity */}
-              <div className="w-full  rounded-xl overflow-hidden bg-slate-50 border border-slate-100 mb-5 relative">
+              <div className="w-full  rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-3 relative">
                 <Image
                   src={t.image}
                   alt={t.label}
@@ -75,20 +71,14 @@ export default function TreatmentsPreview() {
               </div>
 
               {/* Bottom Text Content */}
-              <div className="space-y-2 px-1 pb-2">
-                <h3 className="text-xl font-black text-slate-900">{t.label}</h3>
-                <p className="text-base font-medium text-slate-500 leading-relaxed">
-                  {t.desc}
-                </p>
+              <div className="space-y-2 px-1.5 ">
+                <h3 className="text-lg font-bold text-blue-dark">{t.label}</h3>
               </div>
             </div>
           ))}
         </div>
         <div className="text-center mt-16">
-          <Link
-            href="/treatments"
-            className="primary-btn"
-          >
+          <Link href="/treatments" className="primary-btn">
             <span>সকল চিকিৎসার বিবরণ দেখুন</span>
             <ArrowUpRight className="w-4 h-4 text-slate-200" />
           </Link>

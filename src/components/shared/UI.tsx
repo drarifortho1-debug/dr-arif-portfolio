@@ -11,13 +11,7 @@ const variantStyles: Record<Variant, string> = {
   slate: "bg-slate-100 text-slate-700 border-slate-200",
 };
 
-export function Badge({ children, variant = "primary" }: { children: ReactNode; variant?: Variant }) {
-  return (
-    <div className={`inline-flex items-center gap-2 ${variantStyles[variant]} text-[10px] md:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4 border`}>
-      {children}
-    </div>
-  );
-}
+
 
 export function SectionHeading({ badge, title, description, align = "center" }: { badge?: ReactNode; title: string; description?: string; align?: "center" | "left" }) {
   return (

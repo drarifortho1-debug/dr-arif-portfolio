@@ -1,11 +1,12 @@
 import {
-  Award,
   CalendarCheck,
   ChevronsRight,
   GraduationCap,
+  Hospital,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Badge } from "../shared/badge";
 
 export default function HeroBanner() {
   return (
@@ -13,50 +14,42 @@ export default function HeroBanner() {
       <div className="max-container relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-4 items-center">
           <div className="lg:col-span-7 space-y-8 text-center md:text-left">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100/80 px-4 pt-2 pb-1 rounded-full text-teal-700 text-sm font-semibold tracking-wide ">
-              অর্থোপেডিক্স বিশেষজ্ঞ ও ট্রমা সার্জন
-            </div>
+            <Badge text="অর্থোপেডিক্স বিশেষজ্ঞ ও ট্রমা সার্জন" />
 
-            {/* Headline */}
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-[56px]  font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+              <h1 className="text-4xl sm:text-[56px]  font-extrabold text-blue-dark tracking-tight leading-[1.15]">
                 ডা. গাজী মোহাম্মদ <br />
-                <span className="bg-linear-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent">
-                  আরিফুল ইসলাম (ভিলীয়া)
-                </span>
+                <span className="text-blue-light">আরিফুল ইসলাম (ভিলীয়া)</span>
               </h1>
               <p className="text-lg md:text-xl font-bold text-slate-700"></p>
             </div>
 
-            {/* Qualifications & Experience List */}
             <div className="space-y-3.5">
               <div className="flex items-start justify-center md:justify-start gap-3">
-                <GraduationCap className="w-5 h-5 text-teal-600 shrink-0 mt-0.5 hidden md:block" />
+                <GraduationCap className="w-5 h-5 text-blue-light shrink-0 mt-0.5 hidden md:block" />
                 <div className="text-sm md:text-base space-y-0.5">
-                  <p className="font-bold text-slate-900">
+                  <p className="font-bold text-blue-dark">
                     এমবিবিএস, বিসিএস, এমএস (অর্থোপেডিক্স সার্জারী)
                   </p>
-                  <p className="text-slate-500">
+                  <p className="text-slate-600">
                     বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয় (BSMMU), ঢাকা
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start justify-center md:justify-start gap-3 text-slate-600">
-                <Award className="w-5 h-5 text-slate-400 shrink-0 mt-0.5 hidden md:block" />
+                <Hospital className="w-5 h-5 text-blue-light shrink-0 mt-0.5 hidden md:block" />
                 <div className="text-sm md:text-base space-y-0.5">
-                  <p className="text-slate-900 font-bold">
+                  <p className="text-blue-dark font-bold">
                     সহকারী রেজিস্ট্রার — ক্যাজুয়ালটি বিভাগ
                   </p>
-                  <p className="text-slate-500">
+                  <p className="text-slate-600">
                     কুমিল্লা মেডিকেল কলেজ হাসপাতাল
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
               <a href="tel:+8801858405083" className="primary-btn">
                 <CalendarCheck className="w-4 h-4" />
@@ -73,24 +66,21 @@ export default function HeroBanner() {
           </div>
 
           <div className="lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end relative ">
-            <div className="relative w-full max-w-[94%] mr-auto md:mx-auto md:max-w-100 aspect-3/4 group">
-              <div className="absolute inset-0 bg-linear-to-br from-teal-600 to-emerald-700 rounded-4xl transform translate-x-3 translate-y-3 -rotate-2 group-hover:rotate-0 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-500 ease-out" />
+            <div className="relative w-full max-w-[94%]  mr-auto md:mx-auto md:max-w-100 aspect-3/4 group">
+              <div className="absolute inset-0 bg-blue-light rounded-4xl transform -translate-x-2 translate-y-2 -rotate-3 group-hover:rotate-0 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-500 ease-out" />
 
-              <div className="absolute inset-0 bg-slate-100 rounded-4xl overflow-hidden border-4 border-white shadow-xl shadow-slate-950/10">
+              <div className="absolute inset-0 bg-slate-100  rounded-4xl overflow-hidden border-4 border-white p-4 shadow-xl shadow-slate-950/10">
                 <Image
                   width={500}
                   height={500}
                   src="/doctor-img.png"
                   alt="ডা. গাজী মোহাম্মদ আরিফুল ইসলাম"
-                  className="w-full h-full object-cover object-bottom filter contrast-[1.02] saturate-[1.02]  transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full relative -bottom-4 h-full object-cover object-bottom filter contrast-[1.02] saturate-[1.02]  transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="eager"
                 />
               </div>
 
-              <div className="absolute -bottom-8 -right-4 bg-white/95 backdrop-blur-md border border-slate-200/80 px-5 py-4 rounded-2xl shadow-xl shadow-slate-950/5 flex items-center gap-4 max-w-52.5 group/badge hover:border-teal-200 transition-colors duration-300">
-                {/* Left Side: Number Counter Style */}
-
-                {/* Right Side: Micro-Typography */}
+              <div className="absolute -bottom-8 -right-4 bg-white/95 backdrop-blur-md border border-slate-200/80 px-5 py-4 rounded-2xl shadow-2xl  shadow-slate-blue-light flex items-center gap-4 max-w-52.5 group/badge hover:border-teal-200 transition-colors duration-300">
                 <div className="space-y-0.5">
                   <p className="text-sm font-black text-slate-900 leading-tight tracking-wide">
                     তিনটি চেম্বারে
