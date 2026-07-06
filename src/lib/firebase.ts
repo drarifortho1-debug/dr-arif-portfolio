@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA54eP6gtbTOb9T5PxD6LKxnSVjpN3-Uds",
-  authDomain: "dr-arif-portfolio.firebaseapp.com",
-  projectId: "dr-arif-portfolio",
-  storageBucket: "dr-arif-portfolio.firebasestorage.app",
-  messagingSenderId: "1077840929590",
-  appId: "1:1077840929590:web:c0646ec648a672b18f0997"
+  apiKey: "AIzaSyAcO3_xYKTQfdifYwUy6hIqgoCcp9uRt8I",
+  authDomain: "dr-arif-portfolio-6a807.firebaseapp.com",
+  projectId: "dr-arif-portfolio-6a807",
+  storageBucket: "dr-arif-portfolio-6a807.firebasestorage.app",
+  messagingSenderId: "581317517966",
+  appId: "1:581317517966:web:af1702ff0a827c3f035fdf"
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);

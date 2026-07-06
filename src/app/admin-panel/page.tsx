@@ -64,7 +64,7 @@ export default function AdminPanel() {
 
   const [blogTitle, setBlogTitle] = useState("");
   const [blogContent, setBlogContent] = useState("");
-  const [blogCategory, setBlogCategory] = useState("হাঁটু ব্যথা");
+  const [blogCategory, setBlogCategory] = useState("");
   const [blogReadTime, setBlogReadTime] = useState("");
   const [blogDate, setBlogDate] = useState("");
   const [blogImage, setBlogImage] = useState<File | null>(null);
@@ -121,7 +121,7 @@ export default function AdminPanel() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        if (currentUser.email === "drarifvelia@gmail.com") {
+          if (currentUser.email === "drarifortho1@gmail.com") {
           setUser(currentUser);
           fetchData();
         } else {
@@ -175,7 +175,7 @@ export default function AdminPanel() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError("");
-    if (email !== "drarifvelia@gmail.com") {
+    if (email !== "drarifortho1@gmail.com") {
       setLoginError("Unauthorized email address.");
       return;
     }
@@ -194,7 +194,7 @@ export default function AdminPanel() {
     const formData = new FormData();
     formData.append("image", file);
     const res = await fetch(
-      "https://api.imgbb.com/1/upload?key=4430a21c2dfa6d0be69a6b83cf7d0ceb",
+      "https://api.imgbb.com/1/upload?key=c1592c50fcf0a113d2555385ca8e58ac",
       {
         method: "POST",
         body: formData,
@@ -242,12 +242,14 @@ export default function AdminPanel() {
 
       setBlogTitle("");
       setBlogContent("");
+      setBlogCategory("");
       setBlogReadTime("");
       setBlogDate("");
       setBlogImage(null);
       setEditingBlogId(null);
       fetchData();
     } catch (err) {
+      console.error("Blog save error:", err);
       setMessage({ text: "ব্লগ সেভ করতে সমস্যা হয়েছে", type: "error" });
     } finally {
       setActionLoading(false);
@@ -292,6 +294,7 @@ export default function AdminPanel() {
       setGalleryImages(null);
       fetchData();
     } catch (err) {
+      console.error("Gallery upload error:", err);
       setMessage({ text: "ছবি আপলোড করতে ব্যর্থ হয়েছে", type: "error" });
     } finally {
       setActionLoading(false);
@@ -330,6 +333,7 @@ export default function AdminPanel() {
       setVideoUrl("");
       fetchData();
     } catch (err) {
+      console.error("Video add error:", err);
       setMessage({ text: "ভিডিও যুক্ত করতে ব্যর্থ হয়েছে", type: "error" });
     } finally {
       setActionLoading(false);

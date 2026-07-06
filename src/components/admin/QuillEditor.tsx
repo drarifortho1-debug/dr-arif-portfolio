@@ -33,7 +33,7 @@ export default function QuillEditor({ value, onChange }: { value: string; onChan
   }, []);
 
   useEffect(() => {
-    if (quillInstance.current && value && quillInstance.current.root.innerHTML !== value) {
+    if (quillInstance.current && quillInstance.current.root.innerHTML !== value) {
       quillInstance.current.root.innerHTML = value;
     }
   }, [value]);

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { FileText, Clock, ArrowRight } from "lucide-react";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import { ArrowRight, ArrowUpRight, Clock, FileText } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Badge } from "../shared/badge";
 
 interface Blog {
   id?: string;
@@ -18,7 +19,12 @@ interface Blog {
 }
 
 const stripHtml = (html: string) => {
-  return html ? html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim() : "";
+  return html
+    ? html
+        .replace(/<[^>]*>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+    : "";
 };
 
 export default function BlogsPreview() {
@@ -28,12 +34,16 @@ export default function BlogsPreview() {
   useEffect(() => {
     const fetchLatestBlogs = async () => {
       try {
-        const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"), limit(3));
+        const q = query(
+          collection(db, "blogs"),
+          orderBy("createdAt", "desc"),
+          limit(3),
+        );
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
-          const list = querySnapshot.docs.map(doc => ({
+          const list = querySnapshot.docs.map((doc) => ({
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
           })) as Blog[];
           setBlogsList(list);
         } else {
@@ -66,19 +76,31 @@ export default function BlogsPreview() {
   return (
     <section className="section-padding bg-slate-50/50">
       <div className="max-container">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-blue-light/5 text-blue-light text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border border-blue-light/10 mb-5">
-            স্বাস্থ্য টিপস
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-8 border-b border-slate-200/80 mb-12 text-left">
+          <div className="space-y-3 max-w-xl">
+            <Badge text="   স্বাস্থ্য টিপস" />
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-dark tracking-tight">
+              সর্বশেষ চিকিৎসা বিষয়ক পরামর্শ
+            </h2>
           </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-blue-dark tracking-tight">
-            সর্বশেষ চিকিৎসা বিষয়ক পরামর্শ
-          </h2>
+
+          <Link
+            href="/blogs"
+            className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-blue-light hover:text-blue-dark transition-colors group"
+          >
+            সকল ভিডিওসমূহ
+            <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {blogsList.slice(0,3).map((b, i) => {
+          {blogsList.slice(0, 3).map((b, i) => {
             const previewText = stripHtml(b.content);
             return (
-              <Link key={b.id || i} href={`/blogs/${b.id}`} className="block group">
+              <Link
+                key={b.id || i}
+                href={`/blogs/${b.id}`}
+                className="block group"
+              >
                 <article className=" h-full rounded-xl border border-slate-100 overflow-hidden bg-white shadow hover:shadow-premium transition-all duration-300 flex flex-col">
                   <div className="h-56 bg-slate-50 relative overflow-hidden shrink-0">
                     {b.imageUrl ? (
