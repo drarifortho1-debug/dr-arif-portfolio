@@ -16,7 +16,7 @@ export default function NewsletterSection() {
           সাবস্ক্রাইব করুন।
         </p>
         <Link
-          href="https://www.youtube.com/@Dr.GaziArifVelia1"
+          href="https://youtube.com/@dr.gaziarifvelia1?sub_confirmation=1"
           target="_blank"
           className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
         >

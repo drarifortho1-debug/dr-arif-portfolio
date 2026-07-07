@@ -13,7 +13,7 @@ const quickLinks = [
 const socialLinks = [
   { label: "ফেসবুক", href: "#" },
   { label: "হোয়াটসঅ্যাপ", href: "https://wa.me/8801858405083" },
-  { label: "ইউটিউব", href: "https://www.youtube.com/@Dr.GaziArifVelia1" },
+  { label: "ইউটিউব", href: "https://youtube.com/@dr.gaziarifvelia1?sub_confirmation=1" },
 ];
 
 const chambers = [
