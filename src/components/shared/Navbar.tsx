@@ -1,9 +1,9 @@
 "use client";
 
+import { Menu, Phone, PhoneCall, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Phone, Stethoscope, PhoneCall } from "lucide-react";
-import Image from "next/image";
 
 const navItems = [
   { label: "হোম", href: "/" },
@@ -22,12 +22,14 @@ export default function Navbar() {
       <div className="max-container">
         <div className="flex items-center justify-between h-22">
           {/* Left Side: Minimal Doctor Icon */}
-          <Link
-            href="/"
-            className=""
-            aria-label="হোমপেজ"
-          >
-            <Image className="w-auto h-14" src="/logo.png" width={130} height={100} alt="Doctor Logo"/> 
+          <Link href="/" className="" aria-label="হোমপেজ">
+            <Image
+              className="w-auto h-14"
+              src="/logo.png"
+              width={130}
+              height={100}
+              alt="Doctor Logo"
+            />
           </Link>
 
           {/* Center Side: Main Navigation */}

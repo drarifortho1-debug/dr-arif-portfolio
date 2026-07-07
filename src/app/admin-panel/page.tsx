@@ -21,7 +21,6 @@ import {
 } from "firebase/firestore";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const QuillEditor = dynamic(() => import("@/components/admin/QuillEditor"), {
@@ -54,6 +53,7 @@ export default function AdminPanel() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"blogs" | "gallery" | "videos">(
     "blogs",
   );
@@ -121,7 +121,7 @@ export default function AdminPanel() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-          if (currentUser.email === "drarifortho1@gmail.com") {
+        if (currentUser.email === "drarifortho1@gmail.com") {
           setUser(currentUser);
           fetchData();
         } else {
@@ -179,10 +179,13 @@ export default function AdminPanel() {
       setLoginError("Unauthorized email address.");
       return;
     }
+    setLoginLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err: unknown) {
       setLoginError(err instanceof Error ? err.message : "Failed to log in.");
+    } finally {
+      setLoginLoading(false);
     }
   };
 
@@ -406,9 +409,17 @@ export default function AdminPanel() {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-light hover:bg-blue-dark text-white py-3.5 rounded-xl font-bold transition-all text-sm active:scale-98 shadow-md"
+              disabled={loginLoading}
+              className="w-full bg-blue-light hover:bg-blue-dark disabled:bg-blue-light/50 text-white py-3.5 rounded-xl font-bold transition-all text-sm active:scale-98 shadow-md flex items-center justify-center gap-2"
             >
-              লগইন করুন
+              {loginLoading ? (
+                <>
+                  <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  লগইন হচ্ছে...
+                </>
+              ) : (
+                "লগইন করুন"
+              )}
             </button>
           </form>
         </div>
