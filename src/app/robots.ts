@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/admin-panel/",
     },
-    sitemap: "https://drarifortho.com/sitemap.xml",
+    sitemap: "https://www.drarifortho.com/sitemap.xml",
   };
 }

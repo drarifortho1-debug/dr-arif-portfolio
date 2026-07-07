@@ -4,10 +4,10 @@ import Link from "next/link";
 
 const quickLinks = [
   { label: "হোম", href: "/" },
-  { label: "আমাদের সম্পর্কে", href: "/about" },
-  { label: "চিকিৎসা সেবা", href: "/treatments" },
-  { label: "ভিডিও গ্যালারি", href: "/videos" },
-  { label: "স্বাস্থ্য টিপস", href: "/blogs" },
+  { label: "আমাদের সম্পর্কে", href: "/about-us" },
+  { label: "চিকিৎসা সেবা", href: "/our-treatments" },
+  { label: "ভিডিও গ্যালারি", href: "/our-videos" },
+  { label: "স্বাস্থ্য টিপস", href: "/our-blogs" },
 ];
 
 const socialLinks = [
@@ -22,22 +22,22 @@ const chambers = [
     location:
       "রুম ৭০৬, ৭ম তলা (লিফট-৬), নতুন ভবন, রাণীর বাজার রোড, কান্দিরপাড়, কুমিল্লা",
     schedule: "শনিবার থেকে বুধবার (দুপুর ২:০০ — বিকেল ৫:০০)",
-    phone: "+৮৮০ ১৬১২৩৭১৬৯৬",
-    phone2: "+৮৮০ ১৮৫৮৪০৫০৮৩",
+    phone: "+880 1612371696",
+    phone2: "+880 1858405083",
   },
   {
     name: "পপূলার ডায়াগনস্টিক সেন্টার",
     location:
       "রুম ৫১২, ৫ম তলা (লিফট-৪), হাউজ নাম্বার ৫৭, লাকসাম রোড, রামঘাট, কান্দিরপাড়, কুমিল্লা",
     schedule: "শনিবার থেকে বুধবার (বিকেল ৫:০০ — রাত ৮:০০)",
-    phone: "+৮৮০ ১৬১২৩৭১৬৯৬",
-    phone2: "+৮৮০ ১৮৫৮৪০৫০৮৩",
+    phone: "+880 1612371696",
+    phone2: "+880 1858405083",
   },
   {
     name: "ডক্টর’স পয়েন্ট ডায়াগনস্টিক সেন্টার",
     location: "কালিকাপুর বাজার, বুড়িচং, কুমিল্লা",
     schedule: "শুধুমাত্র শুক্রবার (সকাল ৮:০০ — রাত ৮:০০)",
-    phone: "+৮৮০ ১৬১২৩৭১৬৯৬",
+    phone: "+880 1612371696",
   },
 ];
 
@@ -47,7 +47,7 @@ export default function Footer() {
       <div className="max-container pt-20 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
           <div className="md:col-span-4 space-y-4 text-left">
-            <Image src="/logo.png" width={120} height={100} alt="LOGO"/>
+            <Image src="/logo-white.png" width={120} height={100} alt="LOGO"/>
             <h3 className="font-bold text-white  text-3xl tracking-tight">
               ডা. গাজী মোহাম্মদ <br /> আরিফুল ইসলাম (ভিলীয়া)
             </h3>

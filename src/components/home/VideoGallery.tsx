@@ -42,7 +42,7 @@ export default function VideoGallery() {
           </div>
 
           <Link
-            href="/videos"
+            href="/our-videos"
             className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-blue-light hover:text-blue-dark transition-colors group"
           >
            সকল ভিডিওসমূহ 
@@ -72,7 +72,7 @@ export default function VideoGallery() {
 
         <div className="text-center mt-12 md:hidden">
           <Link
-            href="/videos"
+            href="/our-videos"
             className="inline-flex items-center justify-center gap-2 w-full bg-slate-50 hover:bg-slate-100 text-slate-700 px-6 py-3.5 rounded-xl text-sm font-bold border border-slate-200 transition-all active:scale-95"
           >
             সব ভিডিও দেখুন

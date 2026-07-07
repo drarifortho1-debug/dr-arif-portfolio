@@ -77,7 +77,7 @@ export default function BlogList() {
           {blogsList.map((b, i) => {
             const previewText = stripHtml(b.content);
             return (
-              <Link key={b.id || i} href={`/blogs/${b.id}`} className="block group">
+              <Link key={b.id || i} href={`/our-blogs/${b.id}`} className="block group">
                 <article className="bg-white h-full rounded-lg border border-slate-100 overflow-hidden shadow-sm hover:shadow-premium transition-all duration-300 flex flex-col">
                   <div className="h-56 bg-slate-50 relative overflow-hidden shrink-0">
                     {b.imageUrl ? (

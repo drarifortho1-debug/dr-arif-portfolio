@@ -7,10 +7,10 @@ import { useState } from "react";
 
 const navItems = [
   { label: "হোম", href: "/" },
-  { label: "আমার সম্পর্কে", href: "/about" },
-  { label: "চিকিৎসা সেবা", href: "/treatments" },
-  { label: "ভিডিও গ্যালারি", href: "/videos" },
-  { label: "স্বাস্থ্য টিপস", href: "/blogs" },
+  { label: "আমার সম্পর্কে", href: "/about-us" },
+  { label: "চিকিৎসা সেবা", href: "/our-treatments" },
+  { label: "ভিডিও গ্যালারি", href: "/our-videos" },
+  { label: "স্বাস্থ্য টিপস", href: "/our-blogs" },
 ];
 
 export default function Navbar() {

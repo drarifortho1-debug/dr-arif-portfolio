@@ -9,6 +9,9 @@ import VideoGallery from "@/components/home/VideoGallery";
 import BlogsPreview from "@/components/home/BlogsPreview";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.drarifortho.com",
+  },
   description:
     "অর্থোপেডিক্স বিশেষজ্ঞ ও ট্রমা সার্জন ডা: গাজী মোহাম্মদ আরিফুল ইসলাম (ভিলীয়া) — হাঁটু, কোমর, কাঁধ ও মেরুদন্ডের চিকিৎসা। কুমিল্লা মেডিকেল কলেজ হাসপাতালের সহকারী রেজিষ্ট্রার।",
   openGraph: {

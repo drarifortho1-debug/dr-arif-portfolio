@@ -5,6 +5,9 @@ import NewsletterSection from "@/components/blogs/NewsletterSection";
 
 export const metadata: Metadata = {
   title: "ব্লগ",
+  alternates: {
+    canonical: "https://www.drarifortho.com/our-blogs",
+  },
   description:
     "ডা. আরিফ অর্থোর ব্লগ — হাঁটু, কোমর, কাঁধ ও মেরুদন্ডের সমস্যা নিয়ে বিশেষজ্ঞের পরামর্শ, চিকিৎসা সংক্রান্ত তথ্য ও স্বাস্থ্য টিপস।",
   openGraph: {

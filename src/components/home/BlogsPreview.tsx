@@ -85,7 +85,7 @@ export default function BlogsPreview() {
           </div>
 
           <Link
-            href="/blogs"
+            href="/our-blogs"
             className="hidden md:inline-flex items-center gap-1.5 text-sm font-bold text-blue-light hover:text-blue-dark transition-colors group"
           >
             সকল ভিডিওসমূহ
@@ -98,7 +98,7 @@ export default function BlogsPreview() {
             return (
               <Link
                 key={b.id || i}
-                href={`/blogs/${b.id}`}
+                href={`/our-blogs/${b.id}`}
                 className="block group"
               >
                 <article className=" h-full rounded-xl border border-slate-100 overflow-hidden bg-white shadow hover:shadow-premium transition-all duration-300 flex flex-col">

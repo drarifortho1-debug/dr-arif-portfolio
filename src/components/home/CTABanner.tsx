@@ -1,4 +1,5 @@
-import { Phone, MessageCircle } from "lucide-react";
+import { Phone } from "lucide-react";
+import Image from "next/image";
 import { Badge } from "../shared/badge";
 
 export default function CTABanner() {
@@ -17,7 +18,6 @@ export default function CTABanner() {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 lg:gap-20">
           {/* টেক্সট ব্লক */}
           <div className="space-y-4 max-w-2xl text-left">
-            
             <Badge text="সরাসরি যোগাযোগ" />
             <h2 className="text-3xl md:text-4xl font-bold text-blue-dark tracking-tight leading-tight">
               আপনার সুস্থতাই আমাদের একমাত্র লক্ষ্য
@@ -33,10 +33,10 @@ export default function CTABanner() {
             {/* ডাইরেক্ট কল বাটন */}
             <a
               href="tel:+8801858405083"
-              className="inline-flex items-center justify-center gap-2.5 bg-blue-light hover:bg-blue-dark text-white px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 shadow-md shadow-blue-light/10 hover:shadow-lg hover:shadow-blue-light/20 active:scale-95 text-center"
+              className="inline-flex items-center justify-center gap-2.5 bg-blue-light hover:bg-blue-dark text-white px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 shadow-md shadow-blue-light/10 hover:shadow-lg hover:shadow-blue-light/20 active:scale-95 text-center font-google-sans"
             >
               <Phone className="w-4 h-4 fill-white/10" />
-              ০১৮৫৮৪০৫০৮৩
+              +8801858405083
             </a>
 
             {/* রিয়েল হোয়াটসঅ্যাপ কানেক্টর বাটন */}
@@ -44,9 +44,15 @@ export default function CTABanner() {
               href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 text-white hover:bg-blue-dark bg-blue-dark px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 border border-blue-light/20 shadow-sm active:scale-95 text-center"
+              className="inline-flex items-center justify-center gap-2.5 text-white hover:bg-blue-dark bg-blue-dark px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 border border-blue-light/20 shadow-sm active:scale-95 text-center"
             >
-              <MessageCircle className="w-4 h-4 fill-emerald-50/50" />
+              <Image
+                src="/whatsapp.png"
+                width={50}
+                height={50}
+                alt="Whatsapp Icon "
+                className="size-6"
+              />
               হোয়াটসঅ্যাপে বুক করুন
             </a>
           </div>

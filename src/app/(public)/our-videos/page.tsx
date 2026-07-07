@@ -3,6 +3,9 @@ import VideosContent from "./VideosContent";
 
 export const metadata: Metadata = {
   title: "ভিডিও গ্যালারি",
+  alternates: {
+    canonical: "https://www.drarifortho.com/our-videos",
+  },
   description:
     "ডা. আরিফ অর্থোর চিকিৎসা সংক্রান্ত ভিডিও গ্যালারি — অর্থোপেডিক্স, ট্রমা সার্জারি, রোগীদের পরামর্শ ও বিশেষজ্ঞের মতামত।",
   openGraph: {

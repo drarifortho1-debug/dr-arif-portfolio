@@ -3,6 +3,9 @@ import TreatmentsContent from "./TreatmentsContent";
 
 export const metadata: Metadata = {
   title: "চিকিৎসা সেবা",
+  alternates: {
+    canonical: "https://www.drarifortho.com/our-treatments",
+  },
   description:
     "ডা. আরিফ অর্থোর চিকিৎসা সেবাসমূহ — ট্রমা সার্জারি, অর্থোপেডিক চিকিৎসা, পিআরপি থেরাপি, ওজোন থেরাপি, এমএসকে আল্ট্রাসাউন্ড ও স্পাইন ইন্টারভেনশন।",
   openGraph: {

@@ -78,7 +78,7 @@ export default function TreatmentsPreview() {
           ))}
         </div>
         <div className="text-center mt-16">
-          <Link href="/treatments" className="primary-btn">
+          <Link href="/our-treatments" className="primary-btn">
             <span>সকল চিকিৎসার বিবরণ দেখুন</span>
             <ArrowUpRight className="w-4 h-4 text-slate-200" />
           </Link>

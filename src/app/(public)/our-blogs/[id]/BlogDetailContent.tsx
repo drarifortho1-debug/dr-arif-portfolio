@@ -15,7 +15,7 @@ interface Blog {
   imageUrl?: string;
 }
 
-export default function BlogDetails() {
+export default function BlogDetailContent() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [blog, setBlog] = useState<Blog | null>(null);
@@ -39,7 +39,6 @@ export default function BlogDetails() {
     fetchBlog();
   }, [id]);
 
-  // লোডিং স্টেট (সুন্দর স্পিনার সহ)
   if (loading) {
     return (
       <div className="min-h-screen bg-surface-muted flex items-center justify-center">
@@ -48,7 +47,6 @@ export default function BlogDetails() {
     );
   }
 
-  // ব্লগ না পাওয়া গেলে সুন্দর মেসেজ বক্স
   if (!blog) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
@@ -60,7 +58,7 @@ export default function BlogDetails() {
             হয়তো পোস্টটি মুছে ফেলা হয়েছে অথবা লিংকটি ভুল।
           </p>
           <button
-            onClick={() => router.push("/blogs")}
+            onClick={() => router.push("/our-blogs")}
             className="inline-flex items-center gap-2 text-sm font-semibold bg-blue-light/10 text-blue-light px-4 py-2 rounded-xl hover:bg-blue-light/20 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> ব্লগে ফিরে যান
@@ -94,14 +92,12 @@ export default function BlogDetails() {
       </div>
 
       <article className="">
-        {/* মেটা ইনফো ও টাইটেল */}
         <div className="space-y-4 mb-8">
           <h1 className="text-3xl md:text-4xl font-extrabold text-blue-dark tracking-tight leading-tight md:leading-tight">
             {blog.title}
           </h1>
         </div>
 
-        {/* মডার্ন ফিচার্ড ইমেজ */}
         {blog.imageUrl && (
           <div className="w-full h-[280px] sm:h-[400px] md:h-[480px] relative rounded-md overflow-hidden shadow-md mb-10 group">
             <span className="inline-flex items-center gap-1.5 bg-blue-light text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-full  absolute z-10 top-2 right-2">
@@ -119,7 +115,6 @@ export default function BlogDetails() {
           </div>
         )}
 
-        {/* ব্লগের মূল রিচ টেক্সট কন্টেন্ট */}
         <div>
           <div
             className="blog-rich-text prose prose-slate max-w-none 
