@@ -92,6 +92,25 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
+            <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs mt-8">
+              আইনি
+            </h4>
+            <ul className="space-y-3.5">
+              {[
+                { label: "শর্তাবলী", href: "/terms-and-conditions" },
+                { label: "গোপনীয়তা নীতি", href: "/privacy-policy" },
+                { label: "দায়মুক্তি", href: "/disclaimer" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm font-medium text-white/50 hover:text-white transition-colors duration-200 block"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="md:col-span-5 text-left">
