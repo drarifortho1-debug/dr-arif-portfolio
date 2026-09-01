@@ -21,7 +21,9 @@ import {
 } from "firebase/firestore";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { isValidSlug, slugify, uniqueSlug } from "@/lib/slug";
+import { auditContent, ensureImageAlts } from "@/lib/blog-content";
 
 const QuillEditor = dynamic(() => import("@/components/admin/QuillEditor"), {
   ssr: false,
@@ -30,16 +32,19 @@ const QuillEditor = dynamic(() => import("@/components/admin/QuillEditor"), {
 interface Blog {
   id: string;
   title: string;
+  slug?: string;
   content: string;
   category: string;
   readTime: string;
   date: string;
   imageUrl: string;
+  imageAlt?: string;
 }
 
 interface GalleryImage {
   id: string;
   imageUrl: string;
+  alt?: string;
 }
 
 interface Video {
@@ -63,14 +68,18 @@ export default function AdminPanel() {
   const [videos, setVideos] = useState<Video[]>([]);
 
   const [blogTitle, setBlogTitle] = useState("");
+  const [blogSlug, setBlogSlug] = useState("");
+  const [slugTouched, setSlugTouched] = useState(false);
   const [blogContent, setBlogContent] = useState("");
   const [blogCategory, setBlogCategory] = useState("");
   const [blogReadTime, setBlogReadTime] = useState("");
   const [blogDate, setBlogDate] = useState("");
   const [blogImage, setBlogImage] = useState<File | null>(null);
+  const [blogImageAlt, setBlogImageAlt] = useState("");
   const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
 
   const [galleryImages, setGalleryImages] = useState<FileList | null>(null);
+  const [galleryAlt, setGalleryAlt] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
 
   const [actionLoading, setActionLoading] = useState(false);
@@ -146,10 +155,13 @@ export default function AdminPanel() {
           if (docSnap.exists()) {
             const data = docSnap.data() as Blog;
             setBlogTitle(data.title);
+            setBlogSlug(data.slug || slugify(data.title));
+            setSlugTouched(true);
             setBlogContent(data.content);
             setBlogCategory(data.category);
             setBlogReadTime(data.readTime);
             setBlogDate(data.date);
+            setBlogImageAlt(data.imageAlt || "");
             setEditingBlogId(editId);
             setActiveTab("blogs");
           }
@@ -163,14 +175,53 @@ export default function AdminPanel() {
 
   const trackEditBlog = (b: Blog) => {
     setBlogTitle(b.title);
+    setBlogSlug(b.slug || slugify(b.title));
+    setSlugTouched(true);
     setBlogContent(b.content);
     setBlogCategory(b.category);
     setBlogReadTime(b.readTime);
     setBlogDate(b.date);
+    setBlogImageAlt(b.imageAlt || "");
     setEditingBlogId(b.id);
     setActiveTab("blogs");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const resetBlogForm = () => {
+    setBlogTitle("");
+    setBlogSlug("");
+    setSlugTouched(false);
+    setBlogContent("");
+    setBlogCategory("");
+    setBlogReadTime("");
+    setBlogDate("");
+    setBlogImage(null);
+    setBlogImageAlt("");
+    setEditingBlogId(null);
+  };
+
+  const handleTitleChange = (nextTitle: string) => {
+    setBlogTitle(nextTitle);
+    if (!slugTouched) setBlogSlug(slugify(nextTitle));
+  };
+
+  const takenSlugs = useMemo(
+    () =>
+      blogs
+        .filter((b) => b.id !== editingBlogId)
+        .map((b) => b.slug)
+        .filter((s): s is string => Boolean(s)),
+    [blogs, editingBlogId],
+  );
+
+  const contentAudit = useMemo(
+    () => auditContent(blogContent),
+    [blogContent],
+  );
+
+  const slugConflict = blogSlug.length > 0 && takenSlugs.includes(blogSlug);
+  const slugInvalid = blogSlug.length > 0 && !isValidSlug(blogSlug);
+  const blogsMissingSlug = blogs.filter((b) => !b.slug).length;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,6 +265,27 @@ export default function AdminPanel() {
       setMessage({ text: "অনুগ্রহ করে একটি ছবি নির্বাচন করুন", type: "error" });
       return;
     }
+    if (!blogImageAlt.trim()) {
+      setMessage({
+        text: "কভার ছবির Alt টেক্সট লিখুন — SEO এর জন্য এটি আবশ্যক",
+        type: "error",
+      });
+      return;
+    }
+
+    const finalSlug = slugify(blogSlug || blogTitle);
+    if (!finalSlug) {
+      setMessage({ text: "একটি সঠিক URL স্লাগ লিখুন", type: "error" });
+      return;
+    }
+    if (takenSlugs.includes(finalSlug)) {
+      setMessage({
+        text: `"${finalSlug}" স্লাগটি আগে থেকেই ব্যবহৃত হয়েছে, অন্য একটি লিখুন`,
+        type: "error",
+      });
+      return;
+    }
+
     setActionLoading(true);
     setMessage(null);
     try {
@@ -227,33 +299,60 @@ export default function AdminPanel() {
 
       const blogData = {
         title: blogTitle,
-        content: blogContent,
+        slug: finalSlug,
+        content: ensureImageAlts(blogContent, blogImageAlt.trim() || blogTitle),
         category: blogCategory,
         readTime: blogReadTime || "৫ মিনিট",
         date: blogDate || new Date().toLocaleDateString("bn-BD"),
         imageUrl,
+        imageAlt: blogImageAlt.trim(),
         createdAt: new Date(),
       };
 
       if (editingBlogId) {
         await updateDoc(doc(db, "blogs", editingBlogId), blogData);
-        setMessage({ text: "ব্লগ সফলভাবে আপডেট হয়েছে!", type: "success" });
+        setMessage({ text: "ব্লগ সফলভাবে আপডেট হয়েছে!", type: "success" });
       } else {
         await addDoc(collection(db, "blogs"), blogData);
-        setMessage({ text: "ব্লগ সফলভাবে যুক্ত হয়েছে!", type: "success" });
+        setMessage({ text: "ব্লগ সফলভাবে যুক্ত হয়েছে!", type: "success" });
       }
 
-      setBlogTitle("");
-      setBlogContent("");
-      setBlogCategory("");
-      setBlogReadTime("");
-      setBlogDate("");
-      setBlogImage(null);
-      setEditingBlogId(null);
+      resetBlogForm();
       fetchData();
     } catch (err) {
       console.error("Blog save error:", err);
-      setMessage({ text: "ব্লগ সেভ করতে সমস্যা হয়েছে", type: "error" });
+      setMessage({ text: "ব্লগ সেভ করতে সমস্যা হয়েছে", type: "error" });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleBackfillSlugs = async () => {
+    const pending = blogs.filter((b) => !b.slug);
+    if (pending.length === 0) return;
+    setActionLoading(true);
+    setMessage(null);
+    try {
+      const used = blogs
+        .map((b) => b.slug)
+        .filter((s): s is string => Boolean(s));
+      for (const b of pending) {
+        const generated = uniqueSlug(b.title, used);
+        used.push(generated);
+        await updateDoc(doc(db, "blogs", b.id), {
+          slug: generated,
+          imageAlt: b.imageAlt || b.title,
+          content: ensureImageAlts(b.content || "", b.imageAlt || b.title),
+        });
+      }
+      setMessage({
+        text: `${pending.length} টি পুরোনো ব্লগে URL স্লাগ যুক্ত হয়েছে`,
+        type: "success",
+      });
+      fetchData();
+    } catch (err) {
+      console.error("Slug backfill error:", err);
+      setMessage({ text: "স্লাগ তৈরি করতে সমস্যা হয়েছে", type: "error" });
     } finally {
       setActionLoading(false);
     }
@@ -279,17 +378,28 @@ export default function AdminPanel() {
       setMessage({ text: "অনুগ্রহ করে ছবি নির্বাচন করুন", type: "error" });
       return;
     }
+    if (!galleryAlt.trim()) {
+      setMessage({
+        text: "ছবির Alt টেক্সট লিখুন — SEO এর জন্য এটি আবশ্যক",
+        type: "error",
+      });
+      return;
+    }
     setActionLoading(true);
     setMessage(null);
     try {
-      const uploadPromises = Array.from(galleryImages).map(async (file) => {
+      const files = Array.from(galleryImages);
+      const baseAlt = galleryAlt.trim();
+      const uploadPromises = files.map(async (file, index) => {
         const imageUrl = await uploadToImgbb(file);
         await addDoc(collection(db, "gallery"), {
           imageUrl,
+          alt: files.length > 1 ? `${baseAlt} — ${index + 1}` : baseAlt,
           createdAt: new Date(),
         });
       });
       await Promise.all(uploadPromises);
+      setGalleryAlt("");
       setMessage({
         text: "ছবিগুলো গ্যালারিতে সফলভাবে যুক্ত হয়েছে!",
         type: "success",
@@ -491,24 +601,83 @@ export default function AdminPanel() {
         {activeTab === "blogs" && (
           <div className="grid lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-premium">
-              <h2 className="text-md font-bold text-slate-900 mb-6">
-                {editingBlogId
-                  ? "ব্লগ এডিট করুন"
-                  : "নতুন ব্লগ পোস্ট যুক্ত করুন"}
-              </h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-md font-bold text-slate-900">
+                  {editingBlogId
+                    ? "ব্লগ এডিট করুন"
+                    : "নতুন ব্লগ পোস্ট যুক্ত করুন"}
+                </h2>
+                {editingBlogId && (
+                  <button
+                    type="button"
+                    onClick={resetBlogForm}
+                    className="text-xs font-bold text-slate-500 hover:text-red-600 transition-colors"
+                  >
+                    বাতিল করুন
+                  </button>
+                )}
+              </div>
               <form onSubmit={handleAddBlog} className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 mb-1.5">
-                    ব্লগ শিরোনাম
+                    ব্লগ শিরোনাম (পেজে এটিই H1 হবে)
                   </label>
                   <input
                     type="text"
                     required
                     value={blogTitle}
-                    onChange={(e) => setBlogTitle(e.target.value)}
+                    onChange={(e) => handleTitleChange(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-light text-sm"
                     placeholder="হাঁটু ব্যথার চিকিৎসা"
                   />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">
+                    URL স্লাগ
+                  </label>
+                  <div className="flex items-stretch rounded-xl border border-slate-200 overflow-hidden focus-within:border-blue-light">
+                    <span className="hidden sm:flex items-center bg-slate-50 text-slate-400 text-[11px] px-3 border-r border-slate-200 whitespace-nowrap">
+                      /our-blogs/
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      value={blogSlug}
+                      onChange={(e) => {
+                        setSlugTouched(true);
+                        setBlogSlug(e.target.value);
+                      }}
+                      onBlur={(e) => setBlogSlug(slugify(e.target.value))}
+                      className="flex-1 min-w-0 px-4 py-2.5 focus:outline-none text-sm"
+                      placeholder="hatu-bethar-chikitsa"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSlugTouched(true);
+                        setBlogSlug(uniqueSlug(blogTitle, takenSlugs));
+                      }}
+                      className="bg-slate-50 hover:bg-slate-100 text-slate-600 text-[11px] font-bold px-3 border-l border-slate-200 transition-colors whitespace-nowrap"
+                    >
+                      টাইটেল থেকে
+                    </button>
+                  </div>
+                  {slugInvalid && (
+                    <p className="text-[11px] text-red-600 mt-1.5">
+                      স্লাগে শুধু ছোট হাতের ইংরেজি অক্ষর, সংখ্যা, বাংলা অক্ষর ও
+                      হাইফেন (-) ব্যবহার করুন।
+                    </p>
+                  )}
+                  {slugConflict && (
+                    <p className="text-[11px] text-red-600 mt-1.5">
+                      এই স্লাগটি অন্য একটি ব্লগে ব্যবহৃত হয়েছে।
+                    </p>
+                  )}
+                  {!slugInvalid && !slugConflict && blogSlug && (
+                    <p className="text-[11px] text-slate-400 mt-1.5 break-all">
+                      https://www.drarifortho.com/our-blogs/{blogSlug}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 mb-1.5">
@@ -526,7 +695,7 @@ export default function AdminPanel() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-500 mb-1.5">
-                      পড়ার সময়
+                      পড়ার সময়
                     </label>
                     <input
                       type="text"
@@ -555,7 +724,57 @@ export default function AdminPanel() {
                   <label className="block text-xs font-semibold text-slate-500 mb-1.5">
                     বিস্তারিত কন্টেন্ট
                   </label>
-                  <QuillEditor value={blogContent} onChange={setBlogContent} />
+                  <QuillEditor
+                    value={blogContent}
+                    onChange={setBlogContent}
+                    onImageUpload={uploadToImgbb}
+                  />
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">
+                  <p className="text-xs font-bold text-slate-700">SEO চেক</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="text-[11px] bg-white border border-slate-200 text-slate-600 px-2 py-1 rounded-lg">
+                      H1 (টাইটেল): ১
+                    </span>
+                    {[1, 2, 3, 4, 5, 6].map((level) => (
+                      <span
+                        key={level}
+                        className={`text-[11px] px-2 py-1 rounded-lg border ${
+                          level === 1 && contentAudit.headingCounts[1] > 0
+                            ? "bg-amber-50 border-amber-200 text-amber-700"
+                            : "bg-white border-slate-200 text-slate-600"
+                        }`}
+                      >
+                        H{level}: {contentAudit.headingCounts[level]}
+                      </span>
+                    ))}
+                  </div>
+                  {contentAudit.headingCounts[1] > 0 && (
+                    <p className="text-[11px] text-amber-700">
+                      কন্টেন্টের ভেতরে H1 আছে। পেজের টাইটেল আগে থেকেই H1, তাই
+                      এগুলো H2 করে দিন।
+                    </p>
+                  )}
+                  <p
+                    className={`text-[11px] ${contentAudit.missingAlt > 0 ? "text-red-600" : "text-slate-500"}`}
+                  >
+                    কন্টেন্টের ছবি: {contentAudit.images.length} টি,{" "}
+                    {contentAudit.missingAlt > 0
+                      ? `${contentAudit.missingAlt} টিতে Alt নেই`
+                      : "সবগুলোতে Alt আছে"}
+                  </p>
+                  {contentAudit.headings.length > 0 && (
+                    <ul className="text-[11px] text-slate-500 space-y-0.5 pt-1">
+                      {contentAudit.headings.slice(0, 10).map((h, i) => (
+                        <li key={i} className="truncate">
+                          <span className="font-bold text-slate-400">
+                            H{h.level}
+                          </span>{" "}
+                          {h.text}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 mb-1.5">
@@ -568,9 +787,26 @@ export default function AdminPanel() {
                     className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-light/10 file:text-blue-light hover:file:bg-blue-light/20"
                   />
                 </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">
+                    কভার ছবির Alt টেক্সট
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={blogImageAlt}
+                    onChange={(e) => setBlogImageAlt(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-light text-sm"
+                    placeholder="হাঁটু ব্যথার রোগীকে পরীক্ষা করছেন ডা. আরিফ"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-1.5">
+                    ছবিতে কী দেখা যাচ্ছে তা সংক্ষেপে লিখুন। এটি Google ও স্ক্রিন
+                    রিডারের জন্য ব্যবহৃত হয়।
+                  </p>
+                </div>
                 <button
                   type="submit"
-                  disabled={actionLoading}
+                  disabled={actionLoading || slugInvalid || slugConflict}
                   className="w-full bg-blue-light hover:bg-blue-dark disabled:bg-slate-300 text-white py-3 rounded-xl font-bold text-sm transition-all mt-4"
                 >
                   {actionLoading
@@ -583,9 +819,20 @@ export default function AdminPanel() {
             </div>
 
             <div className="lg:col-span-7 space-y-4">
-              <h2 className="text-md font-bold text-slate-900 mb-2">
-                বর্তমান ব্লগ পোস্ট সমূহ ({blogs.length})
-              </h2>
+              <div className="flex items-center justify-between mb-2 gap-4">
+                <h2 className="text-md font-bold text-slate-900">
+                  বর্তমান ব্লগ পোস্ট সমূহ ({blogs.length})
+                </h2>
+                {blogsMissingSlug > 0 && (
+                  <button
+                    onClick={handleBackfillSlugs}
+                    disabled={actionLoading}
+                    className="bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    {blogsMissingSlug} টি ব্লগে স্লাগ তৈরি করুন
+                  </button>
+                )}
+              </div>
               {blogs.map((b) => (
                 <div
                   key={b.id}
@@ -594,7 +841,7 @@ export default function AdminPanel() {
                   {b.imageUrl && (
                     <img
                       src={b.imageUrl}
-                      alt={b.title}
+                      alt={b.imageAlt || b.title}
                       className="w-20 h-20 object-cover rounded-lg bg-slate-100 shrink-0"
                     />
                   )}
@@ -607,6 +854,11 @@ export default function AdminPanel() {
                     </h3>
                     <p className="text-xs text-slate-500 truncate mt-0.5">
                       {b.readTime}
+                    </p>
+                    <p
+                      className={`text-[11px] truncate mt-0.5 ${b.slug ? "text-slate-400" : "text-red-600 font-bold"}`}
+                    >
+                      {b.slug ? `/our-blogs/${b.slug}` : "URL স্লাগ নেই"}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -629,7 +881,7 @@ export default function AdminPanel() {
               ))}
               {blogs.length === 0 && (
                 <p className="text-sm text-slate-400 text-center py-10 bg-white rounded-xl border border-slate-200">
-                  কোনো ব্লগ পাওয়া যায়নি।
+                  কোনো ব্লগ পাওয়া যায়নি।
                 </p>
               )}
             </div>
@@ -656,6 +908,23 @@ export default function AdminPanel() {
                     className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-light/10 file:text-blue-light hover:file:bg-blue-light/20"
                   />
                 </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">
+                    ছবির Alt টেক্সট
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={galleryAlt}
+                    onChange={(e) => setGalleryAlt(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-light text-sm"
+                    placeholder="চেম্বারে রোগী দেখছেন ডা. আরিফ"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-1.5">
+                    একাধিক ছবি দিলে প্রতিটির Alt এর শেষে সিরিয়াল নম্বর যুক্ত
+                    হবে।
+                  </p>
+                </div>
                 <button
                   type="submit"
                   disabled={actionLoading}
@@ -678,7 +947,7 @@ export default function AdminPanel() {
                   >
                     <img
                       src={g.imageUrl}
-                      alt="Gallery"
+                      alt={g.alt || "গ্যালারি ছবি"}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

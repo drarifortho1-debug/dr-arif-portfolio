@@ -1,43 +1,75 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Calendar, Tag, ArrowLeft, Clock } from "lucide-react";
+import { ensureImageAlts } from "@/lib/blog-content";
 
 interface Blog {
   title: string;
   content: string;
   date: string;
   category: string;
+  readTime?: string;
   imageUrl?: string;
+  imageAlt?: string;
+  slug?: string;
 }
 
 export default function BlogDetailContent() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ slug: string }>();
   const router = useRouter();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const routeParam = params?.slug ? decodeURIComponent(params.slug) : "";
+
   useEffect(() => {
-    if (!id) return;
+    if (!routeParam) return;
+    let redirecting = false;
     const fetchBlog = async () => {
       try {
-        const docRef = doc(db, "blogs", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setBlog(docSnap.data() as Blog);
+        const bySlug = await getDocs(
+          query(
+            collection(db, "blogs"),
+            where("slug", "==", routeParam),
+            limit(1),
+          ),
+        );
+        if (!bySlug.empty) {
+          setBlog(bySlug.docs[0].data() as Blog);
+          return;
+        }
+
+        const byId = await getDoc(doc(db, "blogs", routeParam));
+        if (byId.exists()) {
+          const data = byId.data() as Blog;
+          if (data.slug && data.slug !== routeParam) {
+            redirecting = true;
+            router.replace(`/our-blogs/${data.slug}`);
+            return;
+          }
+          setBlog(data);
         }
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        if (!redirecting) setLoading(false);
       }
     };
     fetchBlog();
-  }, [id]);
+  }, [routeParam, router]);
 
   if (loading) {
     return (
@@ -52,10 +84,10 @@ export default function BlogDetailContent() {
       <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
         <div className="text-center bg-surface p-8 rounded-2xl border border-slate-200 shadow-sm max-w-md">
           <h2 className="text-xl font-bold text-blue-dark mb-2">
-            ব্লগটি পাওয়া যায়নি
+            ব্লগটি পাওয়া যায়নি
           </h2>
           <p className="text-sm text-muted mb-6">
-            হয়তো পোস্টটি মুছে ফেলা হয়েছে অথবা লিংকটি ভুল।
+            হয়তো পোস্টটি মুছে ফেলা হয়েছে অথবা লিংকটি ভুল।
           </p>
           <button
             onClick={() => router.push("/our-blogs")}
@@ -86,7 +118,7 @@ export default function BlogDetailContent() {
           </div>
           <div className="flex items-center gap-1.5">
             <Clock className="w-4 h-4 text-slate-400" />
-            <span>৩ মিনিট পড়া</span>
+            <span>{blog.readTime || "৩ মিনিট"} পড়া</span>
           </div>
         </div>
       </div>
@@ -107,7 +139,7 @@ export default function BlogDetailContent() {
             <Image
               fill
               src={blog.imageUrl}
-              alt={blog.title}
+              alt={blog.imageAlt || blog.title}
               priority
               className="object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
               sizes="(max-w-4xl) 100vw, 896px"
@@ -117,14 +149,16 @@ export default function BlogDetailContent() {
 
         <div>
           <div
-            className="blog-rich-text prose prose-slate max-w-none 
-              text-slate-700 text-base md:text-lg leading-relaxed 
+            className="blog-rich-text prose prose-slate max-w-none
+              text-slate-700 text-base md:text-lg leading-relaxed
               prose-headings:text-blue-dark prose-headings:font-bold
               prose-p:mb-5 prose-p:leading-relaxed
               prose-strong:text-blue-dark prose-strong:font-bold
               prose-ul:list-disc prose-ul:pl-5 prose-li:mb-2
               focus:outline-none"
-            dangerouslySetInnerHTML={{ __html: blog.content }}
+            dangerouslySetInnerHTML={{
+              __html: ensureImageAlts(blog.content, blog.title),
+            }}
           />
         </div>
       </article>

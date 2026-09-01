@@ -10,12 +10,14 @@ import { Badge } from "../shared/badge";
 
 interface Blog {
   id?: string;
+  slug?: string;
   title: string;
   content: string;
   date: string;
   readTime: string;
   category: string;
   imageUrl?: string;
+  imageAlt?: string;
 }
 
 const stripHtml = (html: string) => {
@@ -98,7 +100,7 @@ export default function BlogsPreview() {
             return (
               <Link
                 key={b.id || i}
-                href={`/our-blogs/${b.id}`}
+                href={`/our-blogs/${b.slug || b.id}`}
                 className="block group"
               >
                 <article className=" h-full rounded-xl border border-slate-100 overflow-hidden bg-white shadow hover:shadow-premium transition-all duration-300 flex flex-col">
@@ -106,7 +108,7 @@ export default function BlogsPreview() {
                     {b.imageUrl ? (
                       <Image
                         src={b.imageUrl}
-                        alt={b.title}
+                        alt={b.imageAlt || b.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-w-md) 100vw, 400px"

@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 interface GalleryItem {
   id?: string;
   imageUrl: string;
+  alt?: string;
 }
 
 export default function AboutContent() {
@@ -38,6 +39,7 @@ export default function AboutContent() {
           const list = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             imageUrl: doc.data().imageUrl,
+            alt: doc.data().alt,
           }));
           setGalleryList(list);
         } else {
@@ -412,7 +414,7 @@ export default function AboutContent() {
                 >
                   <Image
                     src={item.imageUrl}
-                    alt={`Gallery Image ${i + 1}`}
+                    alt={item.alt || `ডা. আরিফ অর্থো গ্যালারি ছবি ${i + 1}`}
                     width={500}
                     height={500}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
