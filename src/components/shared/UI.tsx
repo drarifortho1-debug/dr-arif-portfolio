@@ -1,18 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 
-type Variant = "primary" | "amber" | "emerald" | "red" | "slate";
-
-const variantStyles: Record<Variant, string> = {
-  primary: "bg-primary/10 text-primary border-primary/20",
-  amber: "bg-accent/10 text-accent border-accent/20",
-  emerald: "bg-emerald-50 text-emerald-700 border-emerald-200/50",
-  red: "bg-red-50 text-red-700 border-red-200/50",
-  slate: "bg-slate-100 text-slate-700 border-slate-200",
-};
-
-
-
 export function SectionHeading({ badge, title, description, align = "center" }: { badge?: ReactNode; title: string; description?: string; align?: "center" | "left" }) {
   return (
     <div className={`${align === "center" ? "text-center" : "text-left"} mb-12 md:mb-16`}>

@@ -1,79 +1,62 @@
 import { ArrowUpRight } from "lucide-react";
-import Image from "next/image";
+import Image from "@/components/shared/SafeImage";
 import Link from "next/link";
 import { Badge } from "../shared/badge";
+import { blockDefaults } from "@/lib/cms/blocks";
 
-const treatments = [
-  {
-    label: "হাঁটু ব্যথা",
-    desc: "হাঁটুর লিগামেন্ট, কার্টিলেজ ও বিভিন্ন জটিলতার আধুনিক চিকিৎসা",
-    image: "/knee.jpg",
-    href: "/our-treatments/knee-pain",
-  },
-  {
-    label: "কোমর ও মেরুদণ্ড",
-    desc: "ডিস্ক প্রোল্যাপ্স, সাইটিকা ও মেরুদণ্ডের তীব্র ব্যথা ব্যবস্থাপনা",
-    image: "/low-back-pain.jpg",
-    href: "/our-treatments/back-and-spine-pain",
-  },
-  {
-    label: "কাঁধ ও জয়েন্টের সমস্যা",
-    desc: "ফ্রোজেন শোল্ডার, কাঁধের জয়েন্ট ও পেশির দীর্ঘমেয়াদী সমস্যার সমাধান",
-    image: "/shoulder.webp",
-    href: "/our-treatments/shoulder-and-joint-pain",
-  },
-  {
-    label: "স্পোর্টস ইনজুরি",
-    desc: "খেলোয়াড়দের পেশি ও লিগামেন্ট ইনজুরির বিশেষায়িত আধুনিক চিকিৎসা",
-    image: "/sports.jpg",
-    href: "/our-treatments/sports-injury",
-  },
-  {
-    label: "মেরুদণ্ডের সমস্যা ও ট্রমা",
-    desc: "দুর্ঘটনাজনিত হাড় ভাঙা, স্থানচ্যুতি ও জটিল ট্রমা সার্জারি পরবর্তী সেবা",
-    image: "/spine.jpg",
-    href: "/our-treatments/spine-trauma",
-  },
-  {
-    label: "হাতের কব্জি ও পায়ের পাতা",
-    desc: "কব্জি, পায়ের গোড়ালি ও রগ বা পেশির নানান রোগের সমাধান",
-    image: "/wrist.jpg",
-    href: "/our-treatments/wrist-and-foot",
-  },
-];
+export interface TreatmentItem {
+  label: string;
+  desc: string;
+  image: string;
+  href: string;
+}
 
-export default function TreatmentsPreview() {
+export interface TreatmentsData {
+  badge: string;
+  heading: string;
+  buttonLabel: string;
+  buttonHref: string;
+  items: TreatmentItem[];
+}
+
+export default function TreatmentsPreview({
+  data,
+}: {
+  data?: Partial<TreatmentsData>;
+}) {
+  const d = { ...blockDefaults<TreatmentsData>("treatments"), ...data };
+  const items = Array.isArray(d.items) ? d.items : [];
+
   return (
     <section className="bg-white py-24 md:py-32 overflow-hidden">
       <div className="max-container">
-        {/* Header Block */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-8 border-b border-slate-100 mb-10">
           <div className="space-y-3 max-w-xl">
-           
-            <Badge text="বিশেষায়িত সেবা" />
+            {d.badge && <Badge text={d.badge} />}
             <h2 className="text-3xl md:text-4xl font-bold text-blue-dark tracking-tight">
-              আমাদের চিকিৎসা সেবাসমূহ
+              {d.heading}
             </h2>
           </div>
         </div>
 
-        {/* Clean Vertical Stack Grid (Image on Top, Text on Bottom) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 ">
-          {treatments.map((t, i) => (
+          {items.map((t, i) => (
             <Link
               key={i}
-              href={t.href}
+              href={t.href || "/our-treatments"}
               className="group flex flex-col items-start bg-white rounded-xl border border-slate-100 p-2 shadow-sm shadow-slate-100/50 hover:shadow-md hover:border-slate-200/80 transition-all duration-300 text-left"
             >
               <div className="w-full rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-3 relative">
-                <Image
-                  src={t.image}
-                  alt={t.label}
-                  width={500}
-                  height={500}
-                  className="w-full h-full object-cover object-center transition-transform duration-500 scale-101 group-hover:scale-115"
-                  loading="lazy"
-                />
+                {t.image && (
+                  <Image
+                    src={t.image}
+                    alt={t.label}
+                    width={500}
+                    height={500}
+                    className="w-full h-full object-cover object-center transition-transform duration-500 scale-101 group-hover:scale-115"
+                    loading="lazy"
+                  />
+                )}
               </div>
               <div className="space-y-1.5 px-1.5">
                 <h3 className="text-lg font-bold text-blue-dark">{t.label}</h3>
@@ -82,12 +65,14 @@ export default function TreatmentsPreview() {
             </Link>
           ))}
         </div>
-        <div className="text-center mt-16">
-          <Link href="/our-treatments" className="primary-btn">
-            <span>সকল চিকিৎসার বিবরণ দেখুন</span>
-            <ArrowUpRight className="w-4 h-4 text-slate-200" />
-          </Link>
-        </div>
+        {d.buttonLabel && (
+          <div className="text-center mt-16">
+            <Link href={d.buttonHref || "/our-treatments"} className="primary-btn">
+              <span>{d.buttonLabel}</span>
+              <ArrowUpRight className="w-4 h-4 text-slate-200" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

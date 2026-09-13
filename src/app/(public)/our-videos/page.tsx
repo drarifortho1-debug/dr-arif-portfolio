@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import SectionRenderer from "@/components/sections/SectionRenderer";
+import { getPage, getVideos, loadSectionContext } from "@/lib/cms/server";
 import VideosContent from "./VideosContent";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "ভিডিও গ্যালারি",
@@ -15,6 +19,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function VideosPage() {
-  return <VideosContent />;
+export default async function VideosPage() {
+  const page = await getPage("our-videos");
+  const [ctx, videos] = await Promise.all([
+    loadSectionContext(page.sections),
+    getVideos(),
+  ]);
+  return (
+    <SectionRenderer
+      sections={page.sections}
+      ctx={ctx}
+      body={<VideosContent videos={videos} />}
+    />
+  );
 }
