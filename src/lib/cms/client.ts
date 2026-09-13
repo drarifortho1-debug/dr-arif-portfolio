@@ -73,12 +73,14 @@ export async function savePage(page: PageDoc): Promise<void> {
   const prev = existing.exists() ? (existing.data() as Partial<PageDoc>) : {};
 
   await setDoc(doc(db, "pages", page.slug), {
+    ...prev,
     slug: page.slug,
     title: page.title,
     sections: page.sections,
     custom: page.custom ?? prev.custom ?? false,
     seoTitle: page.seoTitle ?? prev.seoTitle ?? "",
     seoDescription: page.seoDescription ?? prev.seoDescription ?? "",
+    noIndex: page.noIndex ?? prev.noIndex ?? false,
     updatedAt: serverTimestamp(),
   });
   await revalidate([pagePath(page.slug)]);
