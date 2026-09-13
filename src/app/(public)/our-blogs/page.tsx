@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import BlogList from "@/components/blogs/BlogList";
 import BlogsHero from "@/components/blogs/BlogsHero";
 import NewsletterSection from "@/components/blogs/NewsletterSection";
+import SectionRenderer from "@/components/sections/SectionRenderer";
+import { getBlogs, getPage, loadSectionContext } from "@/lib/cms/server";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "ব্লগ",
@@ -17,12 +21,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogsPage() {
+export default async function BlogsPage() {
+  const page = await getPage("our-blogs");
+  const [ctx, blogs] = await Promise.all([
+    loadSectionContext(page.sections),
+    getBlogs(),
+  ]);
   return (
-    <div className="pt-15 pb-20 bg-white overflow-hidden">
-      <BlogsHero />
-      <BlogList />
-      <NewsletterSection />
-    </div>
+    <SectionRenderer
+      sections={page.sections}
+      ctx={ctx}
+      body={
+        <div className="pt-15 pb-20 bg-white overflow-hidden">
+          <BlogsHero />
+          <BlogList blogs={blogs} />
+          <NewsletterSection />
+        </div>
+      }
+    />
   );
 }

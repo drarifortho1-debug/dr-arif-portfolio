@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
+import SectionRenderer from "@/components/sections/SectionRenderer";
+import { getPage, getTreatments, loadSectionContext } from "@/lib/cms/server";
+import { treatmentHref } from "@/lib/cms/treatments";
 import TreatmentsContent from "./TreatmentsContent";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "চিকিৎসা সেবা",
@@ -15,6 +20,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function TreatmentsPage() {
-  return <TreatmentsContent />;
+export default async function TreatmentsPage() {
+  const page = await getPage("our-treatments");
+  const [ctx, treatments] = await Promise.all([
+    loadSectionContext(page.sections),
+    getTreatments(),
+  ]);
+  const specialties = treatments.map((t) => ({
+    label: t.navLabel,
+    desc: t.navDesc,
+    href: treatmentHref(t.slug),
+  }));
+  return (
+    <SectionRenderer
+      sections={page.sections}
+      ctx={ctx}
+      body={<TreatmentsContent specialties={specialties} />}
+    />
+  );
 }

@@ -1,8 +1,4 @@
-"use client";
-
 import { Badge } from "@/components/shared/badge";
-import { db } from "@/lib/firebase";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import {
   Activity,
   Award,
@@ -15,40 +11,16 @@ import {
   Stethoscope,
   Users,
 } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import Image from "@/components/shared/SafeImage";
+import type { GalleryItem } from "@/lib/cms/server";
 
-interface GalleryItem {
-  id?: string;
-  imageUrl: string;
-}
+export default function AboutContent({
+  gallery = [],
+}: {
+  gallery?: GalleryItem[];
+}) {
+  const galleryList = gallery;
 
-export default function AboutContent() {
-  const [galleryList, setGalleryList] = useState<GalleryItem[]>([]);
-
-  useEffect(() => {
-    const fetchGallery = async () => {
-      try {
-        const q = query(
-          collection(db, "gallery"),
-          orderBy("createdAt", "desc"),
-        );
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          const list = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            imageUrl: doc.data().imageUrl,
-          }));
-          setGalleryList(list);
-        } else {
-          setGalleryList([]);
-        }
-      } catch {
-        setGalleryList([]);
-      }
-    };
-    fetchGallery();
-  }, []);
 
   const stats = [
     { label: "অভিজ্ঞতা", value: "৫+ বছর", icon: Award },
@@ -140,7 +112,7 @@ export default function AboutContent() {
   ];
 
   return (
-    <main className="flex flex-col min-h-screen bg-white text-slate-900 selection:bg-blue-100">
+    <div className="flex flex-col min-h-screen bg-white text-slate-900 selection:bg-blue-100">
       {/* Hero Section with Soft Gradient */}
       <section className="relative py-24 md:py-32  border-b border-slate-100 overflow-hidden">
         <div className="max-container relative text-center z-10">
@@ -428,6 +400,6 @@ export default function AboutContent() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

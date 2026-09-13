@@ -11,7 +11,7 @@ import {
   Stethoscope,
   X,
 } from "lucide-react";
-import Image from "next/image";
+import Image from "@/components/shared/SafeImage";
 import { useState } from "react";
 import type { TreatmentData } from "./treatment-data";
 
@@ -129,6 +129,23 @@ function DoAndDontRenderer({ dos, donts }: { dos: string[]; donts: string[] }) {
 export default function TreatmentDetail({ data }: { data: TreatmentData }) {
   return (
     <ContentLayout backHref="/our-treatments">
+      {data.heroImage && (
+        <section className="pt-8">
+          <div className="max-container">
+            <div className="overflow-hidden rounded-2xl shadow-sm border border-slate-100 bg-slate-50">
+              <Image
+                src={data.heroImage}
+                width={1920}
+                height={800}
+                alt={data.heroImageAlt || data.title}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="py-12 md:py-16 border-b border-slate-100">
         <div className="max-container">
           <h1 className="text-3xl md:text-4xl  font-bold text-blue-dark tracking-tight leading-tight mb-4">

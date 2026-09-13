@@ -4,16 +4,16 @@ import path from "path";
 const CONTENT_DIR = path.join(process.cwd(), "src/content");
 
 export const TREATMENT_SLUG_MAP: Record<string, string> = {
-  "knee-pain": "knee-pain.md",
-  "back-and-spine-pain": "komor-pain.md",
-  "shoulder-and-joint-pain": "kadh-join-pain.md",
-  "rheumatism-and-arthritis": "bat-betha-athraitis.md",
-  "fracture-and-emergency": "fracture-and-emergency.md",
-  "hand-nerve-and-tendon": "hater-snayu.md",
-  "neck-pain": "ghar-betha.md",
-  "sports-injury": "sports-enjurey.md",
-  "spine-trauma": "merudanda.md",
-  "wrist-and-foot": "hater-kobji.md",
+  "knee-pain-treatment-cumilla": "knee-pain.md",
+  "back-pain-treatment-cumilla": "komor-pain.md",
+  "shoulder-joint-pain-treatment-cumilla": "kadh-join-pain.md",
+  "arthritis-treatment-cumilla": "bat-betha-athraitis.md",
+  "fracture-trauma-treatment-cumilla": "fracture-and-emergency.md",
+  "hand-nerve-tendon-treatment-cumilla": "hater-snayu.md",
+  "neck-pain-treatment-cumilla": "ghar-betha.md",
+  "sports-injury-treatment-cumilla": "sports-enjurey.md",
+  "spine-trauma-treatment-cumilla": "merudanda.md",
+  "wrist-foot-pain-treatment-cumilla": "hater-kobji.md",
 };
 
 export function getAllTreatmentSlugs(): string[] {

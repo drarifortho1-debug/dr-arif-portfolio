@@ -1,5 +1,5 @@
 import { ArrowUpRight, MapPin } from "lucide-react";
-import Image from "next/image";
+import Image from "@/components/shared/SafeImage";
 
 type ChamberCardProps = {
   logo: string;

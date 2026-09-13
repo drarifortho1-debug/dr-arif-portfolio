@@ -1,35 +1,13 @@
-"use client";
-
 import { Badge } from "@/components/shared/badge";
-import { db } from "@/lib/firebase";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import type { VideoItem } from "@/lib/cms/server";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export default function VideosContent() {
-  const [videoIds, setVideoIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const q = query(collection(db, "videos"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          const list = querySnapshot.docs.map(
-            (doc) => doc.data().videoId as string,
-          );
-          setVideoIds(list);
-        } else {
-          setVideoIds([]);
-        }
-      } catch (err) {
-        setVideoIds([]);
-      }
-    };
-    fetchVideos();
-  }, []);
-
+export default function VideosContent({
+  videos = [],
+}: {
+  videos?: VideoItem[];
+}) {
   return (
     <section className="bg-white pt-15 pb-20 w-full overflow-hidden">
       <div className="max-container">
@@ -44,15 +22,15 @@ export default function VideosContent() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {videoIds.map((id) => (
+          {videos.map((v) => (
             <div
-              key={id}
+              key={v.id}
               className="bg-slate-50/50 rounded-2xl p-1.5 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.01)]"
             >
               <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-900">
                 <iframe
                   className="w-full h-full border-0"
-                  src={`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`}
+                  src={`https://www.youtube-nocookie.com/embed/${v.videoId}?rel=0&modestbranding=1`}
                   title="Video player"
                   allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
