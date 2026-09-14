@@ -1,10 +1,14 @@
-import { adminAuth } from "@/lib/firebase-admin";
+import { adminAuth, adminConfigError } from "@/lib/firebase-admin";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 const ALLOWED_PREFIXES = ["/", "/about-us", "/our-treatments", "/our-videos", "/our-blogs"];
 
 export async function POST(req: Request) {
+  if (adminConfigError) {
+    return NextResponse.json({ error: adminConfigError }, { status: 500 });
+  }
+
   const authHeader = req.headers.get("authorization") ?? "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
   if (!token) {
