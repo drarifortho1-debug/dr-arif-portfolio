@@ -1,12 +1,9 @@
-import { createRequire } from "node:module";
-import path from "node:path";
 import type { App } from "firebase-admin/app";
 import type { Auth } from "firebase-admin/auth";
 import type { Firestore } from "firebase-admin/firestore";
+import { app as adminApp, auth as adminAuthModule, firestore as adminFirestoreModule } from "./firebase-admin-modules.cjs";
 
 const REQUIRED = ["FIREBASE_PROJECT_ID", "FIREBASE_CLIENT_EMAIL", "FIREBASE_PRIVATE_KEY"] as const;
-
-const nodeRequire = createRequire(path.join(process.cwd(), "index.js"));
 
 function initialize(): { app: App; error: null } | { app: null; error: string } {
   const missing = REQUIRED.filter((name) => !process.env[name]?.trim());
@@ -18,15 +15,11 @@ function initialize(): { app: App; error: null } | { app: null; error: string } 
   }
 
   try {
-    const { cert, getApps, initializeApp } = nodeRequire(
-      "firebase-admin/app",
-    ) as typeof import("firebase-admin/app");
-
-    const existing = getApps()[0];
+    const existing = adminApp.getApps()[0];
     if (existing) return { app: existing, error: null };
 
-    const app = initializeApp({
-      credential: cert({
+    const app = adminApp.initializeApp({
+      credential: adminApp.cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n"),
@@ -55,22 +48,13 @@ function unavailable<T extends object>(): T {
   });
 }
 
-function load<T extends object>(subpath: string, get: (mod: never) => T): T {
-  if (!state.app) return unavailable<T>();
-  try {
-    return get(nodeRequire(`firebase-admin/${subpath}`) as never);
-  } catch {
-    return unavailable<T>();
-  }
-}
+export const adminDb: Firestore = state.app
+  ? adminFirestoreModule.getFirestore(state.app)
+  : unavailable<Firestore>();
 
-export const adminDb: Firestore = load<Firestore>("firestore", (mod) =>
-  (mod as unknown as typeof import("firebase-admin/firestore")).getFirestore(state.app!),
-);
-
-export const adminAuth: Auth = load<Auth>("auth", (mod) =>
-  (mod as unknown as typeof import("firebase-admin/auth")).getAuth(state.app!),
-);
+export const adminAuth: Auth = state.app
+  ? adminAuthModule.getAuth(state.app)
+  : unavailable<Auth>();
 
 if (adminConfigError) {
   console.error(`[firebase-admin] ${adminConfigError}`);
