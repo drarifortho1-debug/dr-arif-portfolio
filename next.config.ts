@@ -3,6 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactCompiler: true,
   serverExternalPackages: ["firebase-admin"],
+  outputFileTracingIncludes: {
+    "/**": [
+      "./node_modules/firebase-admin/**/*",
+      "./node_modules/.pnpm/firebase-admin@*/node_modules/firebase-admin/**/*",
+    ],
+  },
   images: {
     remotePatterns: [
       {
